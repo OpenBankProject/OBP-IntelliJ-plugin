@@ -1,1 +1,1 @@
-# OBP-IntelliJ-pluin
+# OBP-IntelliJ-plugin
