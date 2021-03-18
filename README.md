@@ -1,5 +1,7 @@
 # OBP-IntelliJ-plugin
 
+## Licence
+
 IntelliJ Plugin for Open Bank Project 
 Copyright (C) 2021, TESOBE GmbH
 
