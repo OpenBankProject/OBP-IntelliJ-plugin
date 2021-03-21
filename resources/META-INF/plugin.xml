@@ -27,12 +27,12 @@
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <applicationService serviceImplementation="org.intellij.sdk.settings.AppSettingsState"/>
+    <applicationService serviceImplementation="org.obp.settings.AppSettingsState"/>
 
   </extensions>
   <extensions defaultExtensionNs="com.intellij">
-    <applicationConfigurable parentId="tools" instance="org.intellij.sdk.settings.AppSettingsConfigurable"
-                             id="org.intellij.sdk.settings.AppSettingsConfigurable"
+    <applicationConfigurable parentId="tools" instance="org.obp.settings.AppSettingsConfigurable"
+                             id="org.obp.settings.AppSettingsConfigurable"
                              displayName="OBP-IntelliJ-plugin: Open Bank Project"/>
   </extensions>
 
