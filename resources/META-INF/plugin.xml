@@ -38,6 +38,10 @@
 
   <actions>
     <!-- Add your actions here -->
+      <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Push Action"
+              description="Push To OBP System">
+          <add-to-group group-id="ToolsMenu" anchor="first"/>
+      </action>
   </actions>
 
 </idea-plugin>

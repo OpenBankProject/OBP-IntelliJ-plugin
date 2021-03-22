@@ -5,11 +5,8 @@ package org.obp.settings;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
-import io.grpc.netty.shaded.io.netty.util.ResourceLeakDetector;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -66,8 +63,8 @@ public class AppSettingsComponent {
             public void actionPerformed(ActionEvent e) {
                 String selectedItem = (String) hostComboBox.getSelectedItem();
 
-                componentMap.values().stream().flatMap(container -> container.stream()).forEach(x -> x.setEnabled(false));
-                componentMap.get(selectedItem).stream().forEach(x -> x.setEnabled(true));
+
+                processEnableSelectedItem(selectedItem);
             }
         });
 
@@ -123,13 +120,18 @@ public class AppSettingsComponent {
         componentMap.get("Host4").add(secret4);
 
         mainPanel = FormBuilder.createFormBuilder()
-                .addLabeledComponent(new JBLabel(": "), login, 1, false)
+                .addLabeledComponent(new JBLabel("Login: "), login, 1, false)
                 .addLabeledComponent(new JBLabel("Password: "), password, 1, false)
                 .addLabeledComponent(new JBLabel("Host"), hostComboBox)
                 .addComponent(settingsPanel, 1)
                 .getPanel();
 
 
+    }
+
+    private void processEnableSelectedItem(String selectedItem) {
+        componentMap.values().stream().flatMap(container -> container.stream()).forEach(x -> x.setEnabled(false));
+        componentMap.get(selectedItem).stream().forEach(x -> x.setEnabled(true));
     }
 
     public JPanel getPanel() {
@@ -261,6 +263,7 @@ public class AppSettingsComponent {
 
     public void setHostVersion(String host) {
         hostComboBox.setSelectedItem(host);
+        processEnableSelectedItem(host);
     }
 
     public String getHostVersion() {
