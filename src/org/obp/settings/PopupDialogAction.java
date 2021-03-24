@@ -3,6 +3,10 @@ package org.obp.settings;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Caret;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
@@ -28,9 +32,18 @@ public class PopupDialogAction extends AnAction {
         @Nullable Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
         AppSettingsState instance = AppSettingsState.getInstance();
 
+        // Get all the required data from data keys
+        final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
 
 
-        Messages.showMessageDialog(currentProject, "Host Version is:"+instance.getHostVersion(), dlgTitle, Messages.getInformationIcon());
+        // Work off of the primary caret to get the selection info
+        Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
+
+        String selectedText = primaryCaret.getSelectedText();
+
+
+        Messages.showMessageDialog(currentProject, "Host Version is:" + instance.getHostVersion() +
+                "\nSelected Text:" + selectedText, dlgTitle, Messages.getInformationIcon());
     }
 
 
