@@ -3,12 +3,9 @@ package org.obp.settings;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Caret;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,10 +37,15 @@ public class PopupDialogAction extends AnAction {
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
 
         String selectedText = primaryCaret.getSelectedText();
+        PushCodeDialog pushCodeDialog = new PushCodeDialog(selectedText);
 
+        if (pushCodeDialog.showAndGet()) {
+            System.out.println(pushCodeDialog.getFunctionNameText());
+        }
 
+/*
         Messages.showMessageDialog(currentProject, "Host Version is:" + instance.getHostVersion() +
-                "\nSelected Text:" + selectedText, dlgTitle, Messages.getInformationIcon());
+                "\nSelected Text:" + selectedText, dlgTitle, Messages.getInformationIcon());*/
     }
 
 
