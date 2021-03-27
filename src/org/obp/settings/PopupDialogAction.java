@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class PopupDialogAction extends AnAction {
@@ -52,13 +54,16 @@ public class PopupDialogAction extends AnAction {
 
 
             try {
+                JSONObject json = new JSONObject();
+                json.put("method_name","checkExternalUserExists").put("method_body","hello()");
                 Unirest.setTimeouts(0, 0);
-                HttpResponse<String> response = null;
-                response = Unirest.get("https://test.openbankproject.com/obp/v4.0.0/users/current")
+                HttpResponse<String> response = Unirest.post("https://test.openbankproject.com/obp/v4.0.0/users/current")
                         .header("Authorization", "DirectLogintoken=eyJhbGciOiJIUzI1NiJ9.eyIiOiIifQ.xe95UT3ZvjUC-BXjtk6rGQuUeJfyyIS1Ha5XsUaRdr0")
                         .header("Content-Type", "application/json")
                         .header("Cookie", "JSESSIONID=node04oiowjti87aa3z7iksnpkg619930.node0")
+                        .body(json.put("method_name","checkExternalUserExists").put("method_body","hello()").toString())
                         .asString();
+
 
 
                 Messages.showMessageDialog(currentProject, "response:"+response.getBody(), dlgTitle, Messages.getInformationIcon());
