@@ -52,21 +52,19 @@ public class PopupDialogAction extends AnAction {
         if (pushCodeDialog.showAndGet()) {
 
 
-
             try {
                 JSONObject json = new JSONObject();
-                json.put("method_name","checkExternalUserExists").put("method_body","hello()");
+                json.put("method_name", "checkExternalUserExists").put("method_body", "hello()");
                 Unirest.setTimeouts(0, 0);
-                HttpResponse<String> response = Unirest.post("https://test.openbankproject.com/obp/v4.0.0/users/current")
+                HttpResponse<String> response = Unirest.put("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods/ca34ff25-25f0-4c62-be2d-b3627e96d356")
                         .header("Authorization", "DirectLogintoken=eyJhbGciOiJIUzI1NiJ9.eyIiOiIifQ.xe95UT3ZvjUC-BXjtk6rGQuUeJfyyIS1Ha5XsUaRdr0")
                         .header("Content-Type", "application/json")
-                        .header("Cookie", "JSESSIONID=node04oiowjti87aa3z7iksnpkg619930.node0")
-                        .body(json.put("method_name","checkExternalUserExists").put("method_body","hello()").toString())
+                        .header("Cookie", "JSESSIONID=node0umackg1zhun41xye364x7ghtl10069.node0")
+                        .body(json.put("method_name", "getBank").put("method_body", "println(\"Hello, world\")").toString())
                         .asString();
 
 
-
-                Messages.showMessageDialog(currentProject, "response:"+response.getBody(), dlgTitle, Messages.getInformationIcon());
+                Messages.showMessageDialog(currentProject, "response:" + response.getBody(), dlgTitle, Messages.getInformationIcon());
             } catch (UnirestException e) {
                 Messages.showMessageDialog(currentProject, e.getStackTrace().toString(), dlgTitle, Messages.getInformationIcon());
             }
