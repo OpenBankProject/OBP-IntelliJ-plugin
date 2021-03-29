@@ -63,20 +63,29 @@ public class PopupDialogAction extends AnAction {
 
 
             try {
-                JSONObject json = new JSONObject();
+                Unirest.setTimeouts(0, 0);
+                HttpResponse<String> tokenResponce = Unirest.post("https://test.openbankproject.com/my/logins/direct")
+                        .header("Content-Type", "application/json")
+                        .header("Authorization", " DirectLogin username=\"vkozhaev\",password=\"Sexboxjazz123!\",consumer_key=\"5esz2enpwpvnismdff5gppkux403b21zd35vigw2\"")
+                        .header("Cookie", "JSESSIONID=node04oiowjti87aa3z7iksnpkg619930.node0")
+                        .asString();
+
+                JSONObject jsonToken =  new JSONObject(tokenResponce.getBody().toString());
+
+                String token= (String) jsonToken.get("token");
+                JSONObject json=new JSONObject();
                 json.put("method_name", "checkExternalUserExists").put("method_body", "%20%20%20%20%20%20Future.successful%28%0A%20%20%20%20%20%20%20%20Full%28%28BankCommons%28%0A%20%20%20%20%20%20%20%20%20%20BankId%28%22Hello%20bank%20id%22%29%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%228%22%0A%20%20%20%20%20%20%20%20%29%2C%20None%29%29%0A%20%20%20%20%20%20%29");
 
-                Unirest.setTimeouts(0, 0);
 
-                HttpResponse<String> response = Unirest.put("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods/ca34ff25-25f0-4c62-be2d-b3627e96d356")
-                        .header("Authorization", "DirectLogintoken=eyJhbGciOiJIUzI1NiJ9.eyIiOiIifQ.xe95UT3ZvjUC-BXjtk6rGQuUeJfyyIS1Ha5XsUaRdr0")
+                HttpResponse<String> putMethodResponce = Unirest.put("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods/ca34ff25-25f0-4c62-be2d-b3627e96d356")
+                        .header("Authorization", "DirectLogintoken="+ token)
                         .header("Content-Type", "application/json")
                         .header("Cookie", "JSESSIONID=node0umackg1zhun41xye364x7ghtl10069.node0")
                         .body(json.put("method_name", "getBank").put("method_body", escapeCode).toString())
                         .asString();
 
 
-                Messages.showMessageDialog(currentProject, "response:" + response.getBody(), dlgTitle, Messages.getInformationIcon());
+                Messages.showMessageDialog(currentProject, "response:" + putMethodResponce.getBody(), dlgTitle, Messages.getInformationIcon());
             } catch (UnirestException e) {
                 Messages.showMessageDialog(currentProject, e.getStackTrace().toString(), dlgTitle, Messages.getInformationIcon());
             }
