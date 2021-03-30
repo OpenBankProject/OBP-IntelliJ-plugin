@@ -86,27 +86,26 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     }
 
 
+    private String hostVersion = new String();
 
-    private String hostVersion=new String();
+    private String host1 = new String();
+    private String host2 = new String();
+    private String host3 = new String();
+    private String host4 = new String();
 
-    private  String host1 = new String();
-    private  String host2 = new String();
-    private  String host3 = new String();
-    private  String host4 = new String();
-
-    private  String consumerKey1 = new String();
-    private  String consumerKey2 = new String();
-    private  String consumerKey3 = new String();
-    private  String consumerKey4 = new String();
+    private String consumerKey1 = new String();
+    private String consumerKey2 = new String();
+    private String consumerKey3 = new String();
+    private String consumerKey4 = new String();
 
 
-    private  String secret1 = new String();
-    private  String secret2 = new String();
-    private  String secret3 = new String();
-    private  String secret4 = new String();
+    private String secret1 = new String();
+    private String secret2 = new String();
+    private String secret3 = new String();
+    private String secret4 = new String();
 
-    private  String login = new String();
-    private  String password = new String();
+    private String login = new String();
+    private String password = new String();
 
 
     public static AppSettingsState getInstance() {
@@ -180,5 +179,33 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     public String getPassword() {
         return password;
     }
-    
+
+    public ModelParams getModelParams() {
+        String host;
+        String secret;
+        String consumerKey;
+
+        if (hostVersion.equals("Host1")) {
+            host = host1;
+            secret = secret1;
+            consumerKey = consumerKey1;
+        } else if (hostVersion.equals("Host2")) {
+            host = host2;
+            secret = secret2;
+            consumerKey = consumerKey2;
+        } else if (hostVersion.equals("Host3")) {
+            host = host3;
+            secret = secret3;
+            consumerKey = consumerKey3;
+        } else {
+            host = host4;
+            secret = secret4;
+            consumerKey = consumerKey4;
+        }
+
+
+        return new ModelParams(host, consumerKey, secret, login, password);
+
+    }
+
 }

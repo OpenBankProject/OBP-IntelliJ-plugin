@@ -203,36 +203,43 @@ public class AppSettingsComponent {
         return secret4.getText();
     }
 
+    public String getLogin(){
+        return login.getText();
+    }
 
-    public void setHost1Text(@NotNull String newText) {
+    public String getPassword(){
+        return password.getText();
+    }
+
+    public void setHost1(@NotNull String newText) {
         host1.setText(newText);
     }
 
-    public void setHost2Text(@NotNull String newText) {
+    public void setHost2(@NotNull String newText) {
         host2.setText(newText);
     }
 
-    public void setHost3Text(@NotNull String newText) {
+    public void setHost3(@NotNull String newText) {
         host3.setText(newText);
     }
 
-    public void setHost4Text(@NotNull String newText) {
+    public void setHost4(@NotNull String newText) {
         host4.setText(newText);
     }
 
-    public void setConsumer1Text(@NotNull String newText) {
+    public void setConsumerKey1(@NotNull String newText) {
         consumerKey1.setText(newText);
     }
 
-    public void setConsumer2Text(@NotNull String newText) {
+    public void setConsumerKey2(@NotNull String newText) {
         consumerKey2.setText(newText);
     }
 
-    public void setConsumer3Text(@NotNull String newText) {
+    public void setConsumerKey3(@NotNull String newText) {
         consumerKey3.setText(newText);
     }
 
-    public void setConsumer4Text(@NotNull String newText) {
+    public void setConsumerKey4(@NotNull String newText) {
         consumerKey4.setText(newText);
     }
 

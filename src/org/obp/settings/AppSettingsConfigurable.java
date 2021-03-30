@@ -52,6 +52,9 @@ public class AppSettingsConfigurable implements Configurable {
                 && mySettingsComponent.getSecret3Text().equals(settings.getSecret3())
                 && mySettingsComponent.getSecret4Text().equals(settings.getSecret4())
                 && mySettingsComponent.getHostVersion().equals(settings.getHostVersion())
+                && mySettingsComponent.getLogin().equals(settings.getLogin())
+                && mySettingsComponent.getPassword().equals(settings.getPassword())
+
 
         );
 
@@ -78,20 +81,22 @@ public class AppSettingsConfigurable implements Configurable {
         settings.setSecret3(mySettingsComponent.getSecret3Text());
         settings.setSecret4(mySettingsComponent.getSecret4Text());
         settings.setHostVersion(mySettingsComponent.getHostVersion());
+        settings.setLogin(mySettingsComponent.getLogin());
+        settings.setPassword(mySettingsComponent.getPassword());
     }
 
     @Override
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        mySettingsComponent.setHost1Text(settings.getHost1());
-        mySettingsComponent.setHost2Text(settings.getHost2());
-        mySettingsComponent.setHost3Text(settings.getHost3());
-        mySettingsComponent.setHost4Text(settings.getHost4());
+        mySettingsComponent.setHost1(settings.getHost1());
+        mySettingsComponent.setHost2(settings.getHost2());
+        mySettingsComponent.setHost3(settings.getHost3());
+        mySettingsComponent.setHost4(settings.getHost4());
 
-        mySettingsComponent.setConsumer1Text(settings.getConsumerKey1());
-        mySettingsComponent.setConsumer2Text(settings.getConsumerKey2());
-        mySettingsComponent.setConsumer3Text(settings.getConsumerKey3());
-        mySettingsComponent.setConsumer4Text(settings.getConsumerKey4());
+        mySettingsComponent.setConsumerKey1(settings.getConsumerKey1());
+        mySettingsComponent.setConsumerKey2(settings.getConsumerKey2());
+        mySettingsComponent.setConsumerKey3(settings.getConsumerKey3());
+        mySettingsComponent.setConsumerKey4(settings.getConsumerKey4());
 
         mySettingsComponent.setSecret1(settings.getSecret1());
         mySettingsComponent.setSecret2(settings.getSecret2());
@@ -99,6 +104,7 @@ public class AppSettingsConfigurable implements Configurable {
         mySettingsComponent.setSecret4(settings.getSecret4());
 
         mySettingsComponent.setLogin(settings.getLogin());
+        mySettingsComponent.setPassword(settings.getPassword());
         mySettingsComponent.setHostVersion(settings.getHostVersion());
 
 
