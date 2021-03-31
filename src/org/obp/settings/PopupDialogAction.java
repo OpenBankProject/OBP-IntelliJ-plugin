@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -65,35 +66,56 @@ public class PopupDialogAction extends AnAction {
             try {
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
-                HttpResponse<String> tokenResponce = Unirest.post("https://test.openbankproject.com/my/logins/direct")
+
+                HttpResponse<String> tokenResponce = Unirest.post(modelParams.getHost() + "/my/logins/direct")
                         .header("Content-Type", "application/json")
                         .header("Authorization", " DirectLogin username=\"" + modelParams.getLogin() + "\",password=\"" + modelParams.getPassword() + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
                         //  .header("Cookie", "JSESSIONID=node04oiowjti87aa3z7iksnpkg619930.node0")
                         .asString();
 
+
                 JSONObject jsonToken = new JSONObject(tokenResponce.getBody().toString());
-                if (tokenResponce.getStatus() == 201) {
-
-
-                    String token = (String) jsonToken.get("token");
-                    JSONObject json = new JSONObject();
-                    json.put("method_name", "checkExternalUserExists").put("method_body", "%20%20%20%20%20%20Future.successful%28%0A%20%20%20%20%20%20%20%20Full%28%28BankCommons%28%0A%20%20%20%20%20%20%20%20%20%20BankId%28%22Hello%20bank%20id%22%29%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%228%22%0A%20%20%20%20%20%20%20%20%29%2C%20None%29%29%0A%20%20%20%20%20%20%29");
-
-
-                    HttpResponse<String> putMethodResponce = Unirest.put("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods/ca34ff25-25f0-4c62-be2d-b3627e96d356")
-                            .header("Authorization", "DirectLogintoken=" + token)
-                            .header("Content-Type", "application/json")
-                            //.header("Cookie", "JSESSIONID=node0umackg1zhun41xye364x7ghtl10069.node0")
-                            .body(json.put("method_name", "getBank").put("method_body", escapeCode).toString())
-                            .asString();
-
-
-                    Messages.showMessageDialog(currentProject, putMethodResponce.getBody(), dlgTitle, Messages.getInformationIcon());
-                } else {
+                if (tokenResponce.getStatus() != 201) {
                     Messages.showMessageDialog(currentProject, String.valueOf(jsonToken.get("message")), dlgTitle, Messages.getInformationIcon());
+                    return;
                 }
+
+                String token = (String) jsonToken.get("token");
+
+                HttpResponse<String> methodIDResponce = Unirest.get("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods")
+                        .header("Authorization", "DirectLogintoken=eyJhbGciOiJIUzI1NiJ9.eyIiOiIifQ.xe95UT3ZvjUC-BXjtk6rGQuUeJfyyIS1Ha5XsUaRdr0")
+                        .header("Content-Type", "application/json")
+                        .asString();
+
+                if (methodIDResponce.getStatus()!=200){
+                    Messages.showMessageDialog(currentProject, String.valueOf(jsonToken.get("message")), dlgTitle, Messages.getInformationIcon());
+                    return;
+                }
+
+                JSONObject methodIDJson=new JSONObject(methodIDResponce.getBody());
+                JSONArray connector_methods = methodIDJson.getJSONArray("connector_methods");
+                JSONObject connectorIDJson = (JSONObject) connector_methods.get(0);
+                String connector_method_id = (String) connectorIDJson.get("connector_method_id");
+                JSONObject json = new JSONObject();
+                json.put("method_name", "checkExternalUserExists").put("method_body", "%20%20%20%20%20%20Future.successful%28%0A%20%20%20%20%20%20%20%20Full%28%28BankCommons%28%0A%20%20%20%20%20%20%20%20%20%20BankId%28%22Hello%20bank%20id%22%29%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%228%22%0A%20%20%20%20%20%20%20%20%29%2C%20None%29%29%0A%20%20%20%20%20%20%29");
+
+
+                HttpResponse<String> putMethodResponce = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
+                        .header("Authorization", "DirectLogintoken=" + token)
+                        .header("Content-Type", "application/json")
+                        //.header("Cookie", "JSESSIONID=node0umackg1zhun41xye364x7ghtl10069.node0")
+                        .body(json.toString())
+                        .asString();
+
+
+                Messages.showMessageDialog(currentProject, putMethodResponce.getBody(), dlgTitle, Messages.getInformationIcon());
+
+
             } catch (UnirestException e) {
-                Messages.showMessageDialog(currentProject, e.getStackTrace().toString(), dlgTitle, Messages.getInformationIcon());
+                Messages.showMessageDialog(currentProject, e.getMessage(), dlgTitle, Messages.getInformationIcon());
+            } catch (RuntimeException re) {
+                Messages.showMessageDialog(currentProject, re.getMessage(), dlgTitle, Messages.getInformationIcon());
+
             }
         }
 
