@@ -50,27 +50,23 @@ public class PopupDialogAction extends AnAction {
         // Work off of the primary caret to get the selection info
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
 
-        String selectedText = primaryCaret.getSelectedText();
-        String escapeCode = null;
-        try {
-            escapeCode = URIUtil.encodeQuery("def hello = println(\"Hello, world!\")");
-        } catch (URIException e) {
-            e.printStackTrace();
-        }
 
-        PushCodeDialog pushCodeDialog = new PushCodeDialog(escapeCode);
+
+        String selectedText = primaryCaret.getSelectedText();
+        PushCodeDialog pushCodeDialog = new PushCodeDialog(selectedText);
 
         if (pushCodeDialog.showAndGet()) {
 
 
             try {
+                String escapeCode = null;
+                escapeCode = URIUtil.encodeQuery(selectedText);
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
 
                 HttpResponse<String> tokenResponce = Unirest.post(modelParams.getHost() + "/my/logins/direct")
                         .header("Content-Type", "application/json")
                         .header("Authorization", " DirectLogin username=\"" + modelParams.getLogin() + "\",password=\"" + modelParams.getPassword() + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
-                        //  .header("Cookie", "JSESSIONID=node04oiowjti87aa3z7iksnpkg619930.node0")
                         .asString();
 
 
@@ -97,13 +93,12 @@ public class PopupDialogAction extends AnAction {
                 JSONObject connectorIDJson = (JSONObject) connector_methods.get(0);
                 String connector_method_id = (String) connectorIDJson.get("connector_method_id");
                 JSONObject json = new JSONObject();
-                json.put("method_name", "checkExternalUserExists").put("method_body", "%20%20%20%20%20%20Future.successful%28%0A%20%20%20%20%20%20%20%20Full%28%28BankCommons%28%0A%20%20%20%20%20%20%20%20%20%20BankId%28%22Hello%20bank%20id%22%29%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%221%22%2C%0A%20%20%20%20%20%20%20%20%20%20%228%22%0A%20%20%20%20%20%20%20%20%29%2C%20None%29%29%0A%20%20%20%20%20%20%29");
+                json.put("method_name", pushCodeDialog.getFunctionNameText()).put("method_body", escapeCode);
 
 
                 HttpResponse<String> putMethodResponce = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
                         .header("Authorization", "DirectLogintoken=" + token)
                         .header("Content-Type", "application/json")
-                        //.header("Cookie", "JSESSIONID=node0umackg1zhun41xye364x7ghtl10069.node0")
                         .body(json.toString())
                         .asString();
 
@@ -111,10 +106,8 @@ public class PopupDialogAction extends AnAction {
                 Messages.showMessageDialog(currentProject, putMethodResponce.getBody(), dlgTitle, Messages.getInformationIcon());
 
 
-            } catch (UnirestException e) {
+            } catch (Exception e) {
                 Messages.showMessageDialog(currentProject, e.getMessage(), dlgTitle, Messages.getInformationIcon());
-            } catch (RuntimeException re) {
-                Messages.showMessageDialog(currentProject, re.getMessage(), dlgTitle, Messages.getInformationIcon());
 
             }
         }
