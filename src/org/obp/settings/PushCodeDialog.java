@@ -3,6 +3,7 @@ package org.obp.settings;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.panels.VerticalLayout;
 import org.jetbrains.annotations.Nullable;
+import org.obp.util.ParsingUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,7 @@ public class PushCodeDialog extends DialogWrapper {
         functionNamePanel.add(label);
         functionNameTF = new JTextField();
         functionNamePanel.add(functionNameTF);
+        functionNameTF.setText(ParsingUtil.getScalaMethodName(functionBodyText));
 
         sl.putConstraint(SpringLayout.WEST, label, 6, SpringLayout.WEST, functionNamePanel);
         sl.putConstraint(SpringLayout.NORTH, label, 6, SpringLayout.NORTH, functionNamePanel);
