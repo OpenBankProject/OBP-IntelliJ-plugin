@@ -6,13 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 
 public class PushCodeDialog extends DialogWrapper {
 
     private String functionBodyText;
-    private String functionNameText;
+    private JTextField functionNameTF;
 
     private PushCodeDialog() {
         super(true);
@@ -35,21 +33,9 @@ public class PushCodeDialog extends DialogWrapper {
         JPanel functionNamePanel = new JPanel(sl);
         JLabel label = new JLabel("Function Name:");
         functionNamePanel.add(label);
-        JTextField functionNameTF = new JTextField();
+        functionNameTF = new JTextField();
         functionNamePanel.add(functionNameTF);
-        functionNamePanel.addContainerListener(new ContainerListener() {
 
-
-            @Override
-            public void componentAdded(ContainerEvent e) {
-
-            }
-
-            @Override
-            public void componentRemoved(ContainerEvent e) {
-                functionNameText = functionNameTF.getText();
-            }
-        });
         sl.putConstraint(SpringLayout.WEST, label, 6, SpringLayout.WEST, functionNamePanel);
         sl.putConstraint(SpringLayout.NORTH, label, 6, SpringLayout.NORTH, functionNamePanel);
         sl.putConstraint(SpringLayout.WEST, functionNameTF, 6, SpringLayout.EAST, label);
@@ -67,7 +53,7 @@ public class PushCodeDialog extends DialogWrapper {
         return dialogPanel;
     }
 
-    public String getFunctionNameText() {
-        return functionNameText;
+    public String getFunctionName() {
+        return functionNameTF.getText();
     }
 }

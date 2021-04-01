@@ -11,18 +11,14 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 
 
-import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class PopupDialogAction extends AnAction {
 
@@ -93,7 +89,7 @@ public class PopupDialogAction extends AnAction {
                 JSONObject connectorIDJson = (JSONObject) connector_methods.get(0);
                 String connector_method_id = (String) connectorIDJson.get("connector_method_id");
                 JSONObject json = new JSONObject();
-                json.put("method_name", pushCodeDialog.getFunctionNameText()).put("method_body", escapeCode);
+                json.put("method_name", pushCodeDialog.getFunctionName()).put("method_body", "Future.successful(%0AFull((BankCommons(%0ABankId(%22Hello%20bank%20id%22)%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%228%22%0A)%2C%20None))%0A)");
 
 
                 HttpResponse<String> putMethodResponce = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
