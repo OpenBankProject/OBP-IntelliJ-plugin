@@ -40,4 +40,9 @@ public class ParsingUtil {
 
         return charIndex;
     }
+
+    public static String removeOverrideKeyWord(String methodBody){
+        String trimmedBody = methodBody.trim();
+        return trimmedBody.startsWith("override")?trimmedBody.substring("override".length()):trimmedBody;
+    }
 }
