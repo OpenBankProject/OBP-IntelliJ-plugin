@@ -42,6 +42,7 @@ public class ParsingUtil {
     }
 
     public static String removeOverrideKeyWord(String methodBody){
+        if (methodBody==null) return "";
         String trimmedBody = methodBody.trim();
         return trimmedBody.startsWith("override")?trimmedBody.substring("override".length()):trimmedBody;
     }

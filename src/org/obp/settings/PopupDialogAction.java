@@ -19,6 +19,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.obp.util.ParsingUtil;
 
 public class PopupDialogAction extends AnAction {
 
@@ -63,7 +64,8 @@ public class PopupDialogAction extends AnAction {
 
 
 
-        String selectedText = primaryCaret.getSelectedText();
+        String selectedText = ParsingUtil.removeOverrideKeyWord(primaryCaret.getSelectedText());
+
         PushCodeDialog pushCodeDialog = new PushCodeDialog(selectedText);
 
         if (pushCodeDialog.showAndGet()) {
