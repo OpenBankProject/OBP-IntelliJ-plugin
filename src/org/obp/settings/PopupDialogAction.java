@@ -71,7 +71,8 @@ public class PopupDialogAction extends AnAction {
 
             try {
                 String escapeCode = null;
-                escapeCode = URIUtil.encodeQuery(selectedText);
+                escapeCode = URIUtil.encodePath(selectedText);
+
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
 
@@ -89,8 +90,8 @@ public class PopupDialogAction extends AnAction {
 
                 String token = (String) jsonToken.get("token");
 
-                HttpResponse<String> methodIDResponce = Unirest.get("https://test.openbankproject.com/obp/v4.0.0/management/connector-methods")
-                        .header("Authorization", "DirectLogintoken=eyJhbGciOiJIUzI1NiJ9.eyIiOiIifQ.xe95UT3ZvjUC-BXjtk6rGQuUeJfyyIS1Ha5XsUaRdr0")
+                HttpResponse<String> methodIDResponce = Unirest.get(modelParams.getHost()+"/obp/v4.0.0/management/connector-methods")
+                        .header("Authorization", "DirectLogintoken="+token)
                         .header("Content-Type", "application/json")
                         .asString();
 
@@ -104,17 +105,17 @@ public class PopupDialogAction extends AnAction {
                 JSONObject connectorIDJson = (JSONObject) connector_methods.get(0);
                 String connector_method_id = (String) connectorIDJson.get("connector_method_id");
                 JSONObject json = new JSONObject();
-                json.put("method_name", pushCodeDialog.getFunctionName()).put("method_body", "Future.successful(%0AFull((BankCommons(%0ABankId(%22Hello%20bank%20id%22)%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%221%22%2C%0A%228%22%0A)%2C%20None))%0A)");
+                json.put("method_name", pushCodeDialog.getFunctionName()).put("method_body", escapeCode);
 
 
-                HttpResponse<String> putMethodResponce = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
+                HttpResponse<String> putMethodResponse = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
                         .header("Authorization", "DirectLogintoken=" + token)
                         .header("Content-Type", "application/json")
                         .body(json.toString())
                         .asString();
 
 
-                Messages.showMessageDialog(currentProject, putMethodResponce.getBody(), dlgTitle, Messages.getInformationIcon());
+                Messages.showMessageDialog(currentProject, putMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
 
 
             } catch (Exception e) {
@@ -122,9 +123,5 @@ public class PopupDialogAction extends AnAction {
 
             }
         }
-
-
     }
-
-
 }
