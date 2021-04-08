@@ -1,17 +1,15 @@
 <idea-plugin>
   <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <name>OBP push</name>
   <version>1.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      OBP push
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+     OBP push
     ]]>
   </change-notes>
 
@@ -40,7 +38,7 @@
     <!-- Add your actions here -->
       <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Push Action"
               description="Push To OBP System">
-        <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        <add-to-group group-id="ToolsMenu" anchor="first"/>
       </action>
   </actions>
 
