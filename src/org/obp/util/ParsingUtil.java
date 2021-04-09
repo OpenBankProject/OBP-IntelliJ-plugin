@@ -1,5 +1,8 @@
 package org.obp.util;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,5 +48,25 @@ public class ParsingUtil {
         if (methodBody==null) return "";
         String trimmedBody = methodBody.trim();
         return trimmedBody.startsWith("override")?trimmedBody.substring("override".length()):trimmedBody;
+    }
+
+    /**
+     *  find the connectorMethodId by connectorMethodName from the JSONArray, if it exists, return the connectorMethodId
+     *  otherwise, it will return ""
+     * @param connectorMethodName eg: getBank
+     * @param connectorMethods the connectorMethod Array, see the Unit test 
+     * 
+     * @return UUID or "".
+     */
+    public static String getConnectorMethodIdFromJSONArray(String connectorMethodName, JSONArray connectorMethods){
+        String connector_method_id = "";
+        for (int i = 0 ; i < connectorMethods.length(); i++) {
+            JSONObject obj = connectorMethods.getJSONObject(i);
+            String method_name = obj.getString("method_name");
+            if(connectorMethodName.equals(method_name)) {
+                connector_method_id = obj.getString("connector_method_id");
+            }
+        }
+        return connector_method_id;
     }
 }
