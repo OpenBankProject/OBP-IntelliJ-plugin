@@ -64,15 +64,15 @@ public class PopupDialogAction extends AnAction {
 
 
 
-        String selectedText = ParsingUtil.removeOverrideKeyWord(primaryCaret.getSelectedText());
+        String selectedMethodBody = ParsingUtil.removeMethodSignature(primaryCaret.getSelectedText());
 
-        PushCodeDialog pushCodeDialog = new PushCodeDialog(selectedText);
+        PushCodeDialog pushCodeDialog = new PushCodeDialog(primaryCaret.getSelectedText());
 
         if (pushCodeDialog.showAndGet()) {
 
 
             try {
-                String methodBodyEscapedCode = URIUtil.encodePath(selectedText);
+                String methodBodyEscapedCode = URIUtil.encodePath(selectedMethodBody);
                 String connectorMethodName = pushCodeDialog.getFunctionName(); 
 
                 Unirest.setTimeouts(0, 0);

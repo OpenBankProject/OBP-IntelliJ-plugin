@@ -44,10 +44,20 @@ public class ParsingUtil {
         return charIndex;
     }
 
-    public static String removeOverrideKeyWord(String methodBody){
+    /**
+     * Better check this endpoint:
+     * https://apiexplorersandbox.openbankproject.com/?version=OBPv4.0.0&operation_id=OBPv4_0_0-createConnectorMethod&currentTag=Connector-Method&#OBPv4_0_0-createConnectorMethod
+     * 
+     * Here, we need to remove the methodSignature, just keep the method body.
+     * @param methodBody override def getAtm(bankId: BankId, atmId: AtmId, callContext: Option[CallContext]): Future[Box[(AtmT, Option[CallContext])]] = {xxxxxx}
+     * 
+     * @return {xxxxxx}
+     */
+    public static String removeMethodSignature(String methodBody){
         if (methodBody==null) return "";
         String trimmedBody = methodBody.trim();
-        return trimmedBody.startsWith("override")?trimmedBody.substring("override".length()):trimmedBody;
+        //Here, I only use the indexOf, maybe later, we need to use regular expression for the method signature
+        return trimmedBody.startsWith("override")?trimmedBody.substring(trimmedBody.indexOf("=")+1):trimmedBody;
     }
 
     /**

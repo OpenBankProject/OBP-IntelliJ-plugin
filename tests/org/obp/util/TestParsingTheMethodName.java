@@ -109,8 +109,8 @@ public class TestParsingTheMethodName {
     }
 
     @Test
-    public void testRemoveOverride(){
-        assertEquals(" def getAtm(bankId: BankId, atmId: AtmId, callContext: Option[CallContext]): Future[Box[(AtmT, Option[CallContext])]] =\n" +
+    public void testRemoveMethodSignature(){
+        assertEquals("\n" +
                 "         {\n" +
                 "         import com.openbankproject.commons.model._\n" +
                 "         Future.successful(\n" +
@@ -157,7 +157,7 @@ public class TestParsingTheMethodName {
                 "         hasDepositCapability = Some(true)\n" +
                 "         ), None)\n" +
                 "         )\n" +
-                "         }",ParsingUtil.removeOverrideKeyWord(SCALA_CODE));
+                "         }",ParsingUtil.removeMethodSignature(SCALA_CODE));
     }
     
     @Test

@@ -49,7 +49,7 @@ public class PushCodeDialog extends DialogWrapper {
         JTextArea functionBodyTextArea = new JTextArea();
         functionBodyTextArea.setPreferredSize(new Dimension(300, 200));
         functionBodyTextArea.setEnabled(false);
-        functionBodyTextArea.setText(functionBodyText);
+        functionBodyTextArea.setText(ParsingUtil.removeMethodSignature(functionBodyText));
         functionBodyPanel.add(functionBodyTextArea);
         dialogPanel.add(functionBodyPanel);
         return dialogPanel;
