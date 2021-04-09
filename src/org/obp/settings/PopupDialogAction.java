@@ -72,53 +72,66 @@ public class PopupDialogAction extends AnAction {
 
 
             try {
-                String escapeCode = null;
-                escapeCode = URIUtil.encodePath(selectedText);
+                String methodBodyEscapedCode = URIUtil.encodePath(selectedText);
+                String connectorMethodName = pushCodeDialog.getFunctionName(); 
 
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
 
-                HttpResponse<String> tokenResponce = Unirest.post(modelParams.getHost() + "/my/logins/direct")
+                HttpResponse<String> directLoginTokenResponse = Unirest.post(modelParams.getHost() + "/my/logins/direct")
                         .header("Content-Type", "application/json")
                         .header("Authorization", " DirectLogin username=\"" + modelParams.getLogin() + "\",password=\"" + modelParams.getPassword() + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
                         .asString();
 
-
-                JSONObject jsonToken = new JSONObject(tokenResponce.getBody().toString());
-                if (tokenResponce.getStatus() != 201) {
-                    Messages.showMessageDialog(currentProject, String.valueOf(jsonToken.get("message")), dlgTitle, Messages.getInformationIcon());
+                if (directLoginTokenResponse.getStatus() != 201) {
+                    Messages.showMessageDialog(currentProject, String.valueOf(directLoginTokenResponse.getBody()), dlgTitle, Messages.getInformationIcon());
                     return;
                 }
+                
+                JSONObject jsonToken = new JSONObject(directLoginTokenResponse.getBody());
+                String directLoginToken = (String) jsonToken.get("token");
+                
 
-                String token = (String) jsonToken.get("token");
-
-                HttpResponse<String> methodIDResponce = Unirest.get(modelParams.getHost()+"/obp/v4.0.0/management/connector-methods")
-                        .header("Authorization", "DirectLogintoken="+token)
+                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(modelParams.getHost()+"/obp/v4.0.0/management/connector-methods")
+                        .header("Authorization", "DirectLogintoken="+directLoginToken)
                         .header("Content-Type", "application/json")
                         .asString();
 
-                if (methodIDResponce.getStatus()!=200){
-                    Messages.showMessageDialog(currentProject, String.valueOf(jsonToken.get("message")), dlgTitle, Messages.getInformationIcon());
+                if (getAllConnectorMethodsResponse.getStatus()!=200){
+                    Messages.showMessageDialog(currentProject, getAllConnectorMethodsResponse.getBody(), dlgTitle, Messages.getInformationIcon());
                     return;
                 }
 
-                JSONObject methodIDJson=new JSONObject(methodIDResponce.getBody());
-                JSONArray connector_methods = methodIDJson.getJSONArray("connector_methods");
-                JSONObject connectorIDJson = (JSONObject) connector_methods.get(0);
-                String connector_method_id = (String) connectorIDJson.get("connector_method_id");
-                JSONObject json = new JSONObject();
-                json.put("method_name", pushCodeDialog.getFunctionName()).put("method_body", escapeCode);
+                JSONObject connectorMethodsJson=new JSONObject(getAllConnectorMethodsResponse.getBody());
+                JSONArray connectorMethodsJonArray = connectorMethodsJson.getJSONArray("connector_methods");
+                
+                
+                String connectorMethodId = ParsingUtil.getConnectorMethodIdFromJSONArray(connectorMethodName, connectorMethodsJonArray);
+                
+                //If the connectorMethodId isEmpty, we will create the new connector method 
+                if(connectorMethodId.isEmpty()){
+                    JSONObject json = new JSONObject();
+                    json.put("method_name", connectorMethodName).put("method_body", methodBodyEscapedCode);
 
+                    HttpResponse<String> postConnectorMethodResponse = Unirest.post(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods")
+                            .header("Authorization", "DirectLogintoken=" + directLoginToken)
+                            .header("Content-Type", "application/json")
+                            .body(json.toString())
+                            .asString();
 
-                HttpResponse<String> putMethodResponse = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/"+connector_method_id)
-                        .header("Authorization", "DirectLogintoken=" + token)
-                        .header("Content-Type", "application/json")
-                        .body(json.toString())
-                        .asString();
+                    Messages.showMessageDialog(currentProject, postConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon()); 
+                } else { //if the connectorMethodId is existing, we will update the current connector method.
+                    JSONObject json = new JSONObject();
+                    json.put("method_body", methodBodyEscapedCode);
 
+                    HttpResponse<String> putConnectorMethodResponse = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/" + connectorMethodId)
+                            .header("Authorization", "DirectLogintoken=" + directLoginToken)
+                            .header("Content-Type", "application/json")
+                            .body(json.toString())
+                            .asString();
 
-                Messages.showMessageDialog(currentProject, putMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
-
+                    Messages.showMessageDialog(currentProject, putConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
+                }
 
             } catch (Exception e) {
                 Messages.showMessageDialog(currentProject, e.getMessage(), dlgTitle, Messages.getInformationIcon());
