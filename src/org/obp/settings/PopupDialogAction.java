@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 
@@ -20,6 +21,9 @@ import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.obp.util.ParsingUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class PopupDialogAction extends AnAction {
 
@@ -132,11 +136,19 @@ public class PopupDialogAction extends AnAction {
                     if (putConnectorMethodResponse.getStatus() == 200) {
                         String successfulMethodName = (String) responseBodyJson.get("method_name");
 
-                        Messages.showMessageDialog(currentProject, "Method "+ successfulMethodName+" is loaded successful", dlgTitle, Messages.getInformationIcon());
+                        Messages.showMessageDialog(currentProject, "Method " + successfulMethodName + " is loaded successful", dlgTitle, Messages.getInformationIcon());
 
                     } else {
+                        JTextArea showMessageTextArea = new JTextArea();
+                        showMessageTextArea.setEditable(false);
                         String message = (String) responseBodyJson.get("message");
-                        Messages.showWarningDialog(currentProject, message, "Problem");
+                        showMessageTextArea.setText(message);
+                        DialogBuilder db = new DialogBuilder();
+                        db.setCenterPanel(showMessageTextArea);
+                        db.setTitle("Problem");
+                        db.removeAllActions();
+                        db.addOkAction();
+                        db.show();
 
                     }
                 }
