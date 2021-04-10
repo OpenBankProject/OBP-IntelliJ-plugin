@@ -38,11 +38,9 @@ public class PopupDialogAction extends AnAction {
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
 
 
-
         String selectedText = primaryCaret.getSelectedText();
-        event.getPresentation().setEnabledAndVisible(selectedText!=null);
+        event.getPresentation().setEnabledAndVisible(selectedText != null);
     }
-
 
 
     @Override
@@ -63,7 +61,6 @@ public class PopupDialogAction extends AnAction {
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
 
 
-
         String selectedMethodBody = ParsingUtil.removeMethodSignature(primaryCaret.getSelectedText());
 
         PushCodeDialog pushCodeDialog = new PushCodeDialog(primaryCaret.getSelectedText());
@@ -73,7 +70,7 @@ public class PopupDialogAction extends AnAction {
 
             try {
                 String methodBodyEscapedCode = URIUtil.encodePath(selectedMethodBody);
-                String connectorMethodName = pushCodeDialog.getFunctionName(); 
+                String connectorMethodName = pushCodeDialog.getFunctionName();
 
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
@@ -87,29 +84,29 @@ public class PopupDialogAction extends AnAction {
                     Messages.showMessageDialog(currentProject, String.valueOf(directLoginTokenResponse.getBody()), dlgTitle, Messages.getInformationIcon());
                     return;
                 }
-                
+
                 JSONObject jsonToken = new JSONObject(directLoginTokenResponse.getBody());
                 String directLoginToken = (String) jsonToken.get("token");
-                
 
-                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(modelParams.getHost()+"/obp/v4.0.0/management/connector-methods")
-                        .header("Authorization", "DirectLogintoken="+directLoginToken)
+
+                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods")
+                        .header("Authorization", "DirectLogintoken=" + directLoginToken)
                         .header("Content-Type", "application/json")
                         .asString();
 
-                if (getAllConnectorMethodsResponse.getStatus()!=200){
+                if (getAllConnectorMethodsResponse.getStatus() != 200) {
                     Messages.showMessageDialog(currentProject, getAllConnectorMethodsResponse.getBody(), dlgTitle, Messages.getInformationIcon());
                     return;
                 }
 
-                JSONObject connectorMethodsJson=new JSONObject(getAllConnectorMethodsResponse.getBody());
+                JSONObject connectorMethodsJson = new JSONObject(getAllConnectorMethodsResponse.getBody());
                 JSONArray connectorMethodsJonArray = connectorMethodsJson.getJSONArray("connector_methods");
-                
-                
+
+
                 String connectorMethodId = ParsingUtil.getConnectorMethodIdFromJSONArray(connectorMethodName, connectorMethodsJonArray);
-                
+
                 //If the connectorMethodId isEmpty, we will create the new connector method 
-                if(connectorMethodId.isEmpty()){
+                if (connectorMethodId.isEmpty()) {
                     JSONObject json = new JSONObject();
                     json.put("method_name", connectorMethodName).put("method_body", methodBodyEscapedCode);
 
@@ -119,7 +116,7 @@ public class PopupDialogAction extends AnAction {
                             .body(json.toString())
                             .asString();
 
-                    Messages.showMessageDialog(currentProject, postConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon()); 
+                    Messages.showMessageDialog(currentProject, postConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
                 } else { //if the connectorMethodId is existing, we will update the current connector method.
                     JSONObject json = new JSONObject();
                     json.put("method_body", methodBodyEscapedCode);
@@ -130,7 +127,18 @@ public class PopupDialogAction extends AnAction {
                             .body(json.toString())
                             .asString();
 
-                    Messages.showMessageDialog(currentProject, putConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
+                    String responseBodyStr = putConnectorMethodResponse.getBody();
+                    JSONObject responseBodyJson = new JSONObject(responseBodyStr);
+                    if (putConnectorMethodResponse.getStatus() == 200) {
+                        String successfulMethodName = (String) responseBodyJson.get("method_name");
+
+                        Messages.showMessageDialog(currentProject, "Method "+ successfulMethodName+" is loaded successful", dlgTitle, Messages.getInformationIcon());
+
+                    } else {
+                        String message = (String) responseBodyJson.get("message");
+                        Messages.showWarningDialog(currentProject, message, "Problem");
+
+                    }
                 }
 
             } catch (Exception e) {
