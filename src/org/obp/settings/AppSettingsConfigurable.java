@@ -24,10 +24,7 @@ public class AppSettingsConfigurable implements Configurable {
         return "OBP-IntelliJ-plugin: Open Bank Project";
     }
 
-    @Override
-    public JComponent getPreferredFocusedComponent() {
-        return mySettingsComponent.getPreferredFocusedComponent();
-    }
+
 
     @Nullable
     @Override
@@ -39,21 +36,24 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        boolean modified = !(mySettingsComponent.getConsumer1Text().equals(settings.getConsumerKey1())
-                && mySettingsComponent.getConsumer2Text().equals(settings.getConsumerKey2())
-                && mySettingsComponent.getConsumer3Text().equals(settings.getConsumerKey3())
-                && mySettingsComponent.getConsumer4Text().equals(settings.getConsumerKey4())
-                && mySettingsComponent.getHost1Text().equals(settings.getHost1())
-                && mySettingsComponent.getHost2Text().equals(settings.getHost2())
-                && mySettingsComponent.getHost3Text().equals(settings.getHost3())
-                && mySettingsComponent.getHost4Text().equals(settings.getHost4())
-                && mySettingsComponent.getSecret1Text().equals(settings.getSecret1())
-                && mySettingsComponent.getSecret2Text().equals(settings.getSecret2())
-                && mySettingsComponent.getSecret3Text().equals(settings.getSecret3())
-                && mySettingsComponent.getSecret4Text().equals(settings.getSecret4())
-                && mySettingsComponent.getHostVersion().equals(settings.getHostVersion())
-                && mySettingsComponent.getLogin().equals(settings.getLogin())
-                && mySettingsComponent.getPassword().equals(settings.getPassword())
+        boolean modified = !(
+                mySettingsComponent.getConsumer1Text().equals(settings.getConsumerKey1())
+                        && mySettingsComponent.getConsumer2Text().equals(settings.getConsumerKey2())
+                        && mySettingsComponent.getConsumer3Text().equals(settings.getConsumerKey3())
+                        && mySettingsComponent.getConsumer4Text().equals(settings.getConsumerKey4())
+                        && mySettingsComponent.getHost1Text().equals(settings.getHost1())
+                        && mySettingsComponent.getHost2Text().equals(settings.getHost2())
+                        && mySettingsComponent.getHost3Text().equals(settings.getHost3())
+                        && mySettingsComponent.getHost4Text().equals(settings.getHost4())
+                        && mySettingsComponent.getLogin1().equals(settings.getLogin1())
+                        && mySettingsComponent.getLogin2().equals(settings.getLogin2())
+                        && mySettingsComponent.getLogin3().equals(settings.getLogin3())
+                        && mySettingsComponent.getLogin4().equals(settings.getLogin4())
+                        && mySettingsComponent.getPassword1().equals(settings.getPassword1())
+                        && mySettingsComponent.getPassword2().equals(settings.getPassword2())
+                        && mySettingsComponent.getPassword3().equals(settings.getPassword3())
+                        && mySettingsComponent.getPassword4().equals(settings.getPassword4())
+                        && mySettingsComponent.getHostVersion().equals(settings.getHostVersion())
 
 
         );
@@ -76,13 +76,17 @@ public class AppSettingsConfigurable implements Configurable {
         settings.setConsumerKey3(mySettingsComponent.getConsumer3Text());
         settings.setConsumerKey4(mySettingsComponent.getConsumer4Text());
 
-        settings.setSecret1(mySettingsComponent.getSecret1Text());
-        settings.setSecret2(mySettingsComponent.getSecret2Text());
-        settings.setSecret3(mySettingsComponent.getSecret3Text());
-        settings.setSecret4(mySettingsComponent.getSecret4Text());
+        settings.setLogin1(mySettingsComponent.getLogin1());
+        settings.setLogin2(mySettingsComponent.getLogin2());
+        settings.setLogin3(mySettingsComponent.getLogin3());
+        settings.setLogin4(mySettingsComponent.getLogin4());
+
+        settings.setPassword1(mySettingsComponent.getPassword1());
+        settings.setPassword2(mySettingsComponent.getPassword2());
+        settings.setPassword3(mySettingsComponent.getPassword3());
+        settings.setPassword4(mySettingsComponent.getPassword4());
+
         settings.setHostVersion(mySettingsComponent.getHostVersion());
-        settings.setLogin(mySettingsComponent.getLogin());
-        settings.setPassword(mySettingsComponent.getPassword());
     }
 
     @Override
@@ -98,13 +102,17 @@ public class AppSettingsConfigurable implements Configurable {
         mySettingsComponent.setConsumerKey3(settings.getConsumerKey3());
         mySettingsComponent.setConsumerKey4(settings.getConsumerKey4());
 
-        mySettingsComponent.setSecret1(settings.getSecret1());
-        mySettingsComponent.setSecret2(settings.getSecret2());
-        mySettingsComponent.setSecret3(settings.getSecret3());
-        mySettingsComponent.setSecret4(settings.getSecret4());
+        mySettingsComponent.setLogin1(settings.getLogin1());
+        mySettingsComponent.setLogin2(settings.getLogin2());
+        mySettingsComponent.setLogin3(settings.getLogin3());
+        mySettingsComponent.setLogin4(settings.getLogin4());
 
-        mySettingsComponent.setLogin(settings.getLogin());
-        mySettingsComponent.setPassword(settings.getPassword());
+        mySettingsComponent.setPassword1(settings.getPassword1());
+        mySettingsComponent.setPassword2(settings.getPassword2());
+        mySettingsComponent.setPassword3(settings.getPassword3());
+        mySettingsComponent.setPassword4(settings.getPassword4());
+
+
         mySettingsComponent.setHostVersion(settings.getHostVersion());
 
 

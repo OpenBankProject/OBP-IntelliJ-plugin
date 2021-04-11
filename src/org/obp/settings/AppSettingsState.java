@@ -20,6 +20,29 @@ import org.jetbrains.annotations.Nullable;
         storages = {@Storage("SdkSettingsPlugin.xml")}
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
+    private String hostVersion = new String();
+    private String login1=new String();
+    private String login2=new String();
+    private String login3=new String();
+    private String login4=new String();
+
+    private String host1 = new String();
+    private String host2 = new String();
+    private String host3 = new String();
+    private String host4 = new String();
+
+    private String consumerKey1 = new String();
+    private String consumerKey2 = new String();
+    private String consumerKey3 = new String();
+    private String consumerKey4 = new String();
+
+
+    private String password1 = new String();
+    private String password2 = new String();
+    private String password3 = new String();
+    private String password4 = new String();
+
+
     public void setHost1(String host1) {
         this.host1 = host1;
     }
@@ -52,29 +75,23 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
         this.consumerKey4 = consumerKey4;
     }
 
-    public void setSecret1(String secret1) {
-        this.secret1 = secret1;
+    public void setPassword1(String password1) {
+        this.password1 = password1;
     }
 
-    public void setSecret2(String secret2) {
-        this.secret2 = secret2;
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
 
-    public void setSecret3(String secret3) {
-        this.secret3 = secret3;
+    public void setPassword3(String password3) {
+        this.password3 = password3;
     }
 
-    public void setSecret4(String secret4) {
-        this.secret4 = secret4;
+    public void setPassword4(String password4) {
+        this.password4 = password4;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 
     public String getHostVersion() {
@@ -86,26 +103,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     }
 
 
-    private String hostVersion = new String();
 
-    private String host1 = new String();
-    private String host2 = new String();
-    private String host3 = new String();
-    private String host4 = new String();
-
-    private String consumerKey1 = new String();
-    private String consumerKey2 = new String();
-    private String consumerKey3 = new String();
-    private String consumerKey4 = new String();
-
-
-    private String secret1 = new String();
-    private String secret2 = new String();
-    private String secret3 = new String();
-    private String secret4 = new String();
-
-    private String login = new String();
-    private String password = new String();
 
 
     public static AppSettingsState getInstance() {
@@ -155,57 +153,79 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
         return consumerKey4;
     }
 
-    public String getSecret1() {
-        return secret1;
+    public String getPassword1() {
+        return password1;
     }
 
-    public String getSecret2() {
-        return secret2;
+    public String getPassword2() {
+        return password2;
     }
 
-    public String getSecret3() {
-        return secret3;
+    public String getPassword3() {
+        return password3;
     }
 
-    public String getSecret4() {
-        return secret4;
+    public String getPassword4() {
+        return password4;
     }
 
-    public String getLogin() {
-        return login;
+    public String getLogin1() {
+        return login1;
+    }
+    public String getLogin2() {
+        return login2;
+    }
+    public String getLogin3() {
+        return login3;
+    }
+    public String getLogin4() {
+        return login4;
     }
 
-
-    public String getPassword() {
-        return password;
-    }
 
     public ModelParams getModelParams() {
         String host;
-        String secret;
+        String login;
+        String password;
         String consumerKey;
 
         if (hostVersion.equals("Host1")) {
             host = host1;
-            secret = secret1;
+            login = login1;
+            password = password1;
             consumerKey = consumerKey1;
         } else if (hostVersion.equals("Host2")) {
             host = host2;
-            secret = secret2;
+            login = login2;
+            password = password2;
             consumerKey = consumerKey2;
         } else if (hostVersion.equals("Host3")) {
             host = host3;
-            secret = secret3;
+            login = login3;
+            password = password3;
             consumerKey = consumerKey3;
         } else {
             host = host4;
-            secret = secret4;
+            login = login4;
+            password = password4;
             consumerKey = consumerKey4;
         }
 
 
-        return new ModelParams(host, consumerKey, secret, login, password);
+        return new ModelParams(host, consumerKey, login, password);
 
     }
 
+    public void setLogin1(String l) {
+        this.login1=l;
+    }
+    public void setLogin2(String l) {
+        this.login2=l;
+    }
+    public void setLogin3(String l) {
+        this.login3=l;
+    }
+    public void setLogin4(String l) {
+        this.login4=l;
+    }
 }

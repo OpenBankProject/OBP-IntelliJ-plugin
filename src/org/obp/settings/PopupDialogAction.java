@@ -140,10 +140,12 @@ public class PopupDialogAction extends AnAction {
 
                     } else {
                         JTextArea showMessageTextArea = new JTextArea();
+
                         showMessageTextArea.setEditable(false);
                         String message = (String) responseBodyJson.get("message");
                         showMessageTextArea.setText(message);
                         DialogBuilder db = new DialogBuilder();
+
                         db.setCenterPanel(showMessageTextArea);
                         db.setTitle("Problem");
                         db.removeAllActions();
