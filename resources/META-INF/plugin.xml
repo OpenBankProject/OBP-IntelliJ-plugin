@@ -36,8 +36,8 @@
 
   <actions>
     <!-- Add your actions here -->
-      <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Push Action"
-              description="Push To OBP System">
+      <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Create Connector Method"
+              description="OBP Create Connector Method">
         <add-to-group group-id="ToolsMenu" anchor="first"/>
       </action>
   </actions>
