@@ -4,6 +4,7 @@ import obp.settings.antlrgenerated.ScalaBaseVisitor;
 import obp.settings.antlrgenerated.ScalaLexer;
 import obp.settings.antlrgenerated.ScalaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.atn.PredictionMode;
@@ -41,7 +42,8 @@ public class FoundMethodsVisitor extends ScalaBaseVisitor<ScalaCode> {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ScalaParser parser = new ScalaParser(tokens);
         parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
-        ParseTree tree = parser.compilationUnit();
+        //parser.setErrorHandler(new BailErrorStrategy());
+        ParseTree tree = parser.block();
         FoundMethodsVisitor eval = new FoundMethodsVisitor();
         eval.visit(tree);
 

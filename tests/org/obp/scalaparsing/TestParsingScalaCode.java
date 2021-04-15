@@ -14,6 +14,11 @@ public class TestParsingScalaCode {
 
     @Test
     public void testHelloWorldFunction() throws IOException {
-        assertEquals(0,FoundMethodsVisitor.parseScalaFunction("def hello = println(\"Hello, world!\")").size());
+        assertEquals(1,FoundMethodsVisitor.parseScalaFunction("def hello = println(\"Hello, world!\")").size());
+    }
+
+    @Test
+    public void testHelloWorldFunctionWithBracket() throws IOException {
+        assertEquals(1,FoundMethodsVisitor.parseScalaFunction("{def hello = println(\"Hello, world!\")}").size());
     }
 }
