@@ -107,7 +107,8 @@ expr1
    | 'for' ('(' enumerators ')' | '{' enumerators '}') 'yield'? expr
    | 'throw' expr
    | 'return' expr?
-   | ((simpleExpr | simpleExpr1 '_'?) '.')? Id '=' expr
+   |
+
    | simpleExpr1 argumentExprs '=' expr
    | postfixExpr ascription?
    | postfixExpr 'match' '{' caseClauses '}'
