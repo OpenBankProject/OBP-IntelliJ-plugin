@@ -110,25 +110,11 @@ public class PopupDialogAction extends AnAction {
 
                 //If the connectorMethodId isEmpty, we will create the new connector method 
                 if (connectorMethodId.isEmpty()) {
-                    JSONObject json = new JSONObject();
-                    json.put("method_name", connectorMethodName).put("method_body", methodBodyEscapedCode);
-
-                    HttpResponse<String> postConnectorMethodResponse = Unirest.post(host + "/obp/v4.0.0/management/connector-methods")
-                            .header("Authorization", "DirectLogintoken=" + directLoginToken)
-                            .header("Content-Type", "application/json")
-                            .body(json.toString())
-                            .asString();
+                    HttpResponse<String> postConnectorMethodResponse = putNewConnectionMethod(methodBodyEscapedCode, connectorMethodName, host, directLoginToken);
 
                     Messages.showMessageDialog(currentProject, postConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
                 } else { //if the connectorMethodId is existing, we will update the current connector method.
-                    JSONObject json = new JSONObject();
-                    json.put("method_body", methodBodyEscapedCode);
-
-                    HttpResponse<String> putConnectorMethodResponse = Unirest.put(host + "/obp/v4.0.0/management/connector-methods/" + connectorMethodId)
-                            .header("Authorization", "DirectLogintoken=" + directLoginToken)
-                            .header("Content-Type", "application/json")
-                            .body(json.toString())
-                            .asString();
+                    HttpResponse<String> putConnectorMethodResponse = updateExistingMethodResponse(methodBodyEscapedCode, host, directLoginToken, connectorMethodId);
 
                     String responseBodyStr = putConnectorMethodResponse.getBody();
                     JSONObject responseBodyJson = new JSONObject(responseBodyStr);
@@ -155,6 +141,30 @@ public class PopupDialogAction extends AnAction {
 
             }
         }
+    }
+
+    private HttpResponse<String> updateExistingMethodResponse(String methodBodyEscapedCode, String host, String directLoginToken, String connectorMethodId) throws UnirestException {
+        JSONObject json = new JSONObject();
+        json.put("method_body", methodBodyEscapedCode);
+
+        HttpResponse<String> putConnectorMethodResponse = Unirest.put(host + "/obp/v4.0.0/management/connector-methods/" + connectorMethodId)
+                .header("Authorization", "DirectLogintoken=" + directLoginToken)
+                .header("Content-Type", "application/json")
+                .body(json.toString())
+                .asString();
+        return putConnectorMethodResponse;
+    }
+
+    private HttpResponse<String> putNewConnectionMethod(String methodBodyEscapedCode, String connectorMethodName, String host, String directLoginToken) throws UnirestException {
+        JSONObject json = new JSONObject();
+        json.put("method_name", connectorMethodName).put("method_body", methodBodyEscapedCode);
+
+        HttpResponse<String> postConnectorMethodResponse = Unirest.post(host + "/obp/v4.0.0/management/connector-methods")
+                .header("Authorization", "DirectLogintoken=" + directLoginToken)
+                .header("Content-Type", "application/json")
+                .body(json.toString())
+                .asString();
+        return postConnectorMethodResponse;
     }
 
     private HttpResponse<String> getIfMethodExistsResponse(String host, String directLoginToken) throws UnirestException {
