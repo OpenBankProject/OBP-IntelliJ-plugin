@@ -95,17 +95,14 @@ public class PopupDialogAction extends AnAction {
                 String directLoginToken = (String) jsonToken.get("token");
 
 
-                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(host + "/obp/v4.0.0/management/connector-methods")
-                        .header("Authorization", "DirectLogintoken=" + directLoginToken)
-                        .header("Content-Type", "application/json")
-                        .asString();
+                HttpResponse<String> connectionMethodResponse = getIfMethodExistsResponse(host, directLoginToken);
 
-                if (getAllConnectorMethodsResponse.getStatus() != 200) {
-                    Messages.showMessageDialog(currentProject, getAllConnectorMethodsResponse.getBody(), dlgTitle, Messages.getInformationIcon());
+                if (connectionMethodResponse.getStatus() != 200) {
+                    Messages.showMessageDialog(currentProject, connectionMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
                     return;
                 }
 
-                JSONObject connectorMethodsJson = new JSONObject(getAllConnectorMethodsResponse.getBody());
+                JSONObject connectorMethodsJson = new JSONObject(connectionMethodResponse.getBody());
                 JSONArray connectorMethodsJonArray = connectorMethodsJson.getJSONArray("connector_methods");
 
 
@@ -158,6 +155,13 @@ public class PopupDialogAction extends AnAction {
 
             }
         }
+    }
+
+    private HttpResponse<String> getIfMethodExistsResponse(String host, String directLoginToken) throws UnirestException {
+        return Unirest.get(host + "/obp/v4.0.0/management/connector-methods")
+                .header("Authorization", "DirectLogintoken=" + directLoginToken)
+                .header("Content-Type", "application/json")
+                .asString();
     }
 
     private HttpResponse<String> getLoginTokenResponse(ModelParams modelParams, String host, String login, String password) throws UnirestException {
