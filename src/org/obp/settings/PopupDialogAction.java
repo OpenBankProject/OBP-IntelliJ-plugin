@@ -20,10 +20,10 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.obp.ui.PushCodeDialog;
 import org.obp.util.ParsingUtil;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class PopupDialogAction extends AnAction {
 
@@ -78,10 +78,14 @@ public class PopupDialogAction extends AnAction {
 
                 Unirest.setTimeouts(0, 0);
                 ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
+                String host = modelParams.getHost();
+                String login = modelParams.getLogin();
+                String password = modelParams.getPassword();
 
-                HttpResponse<String> directLoginTokenResponse = Unirest.post(modelParams.getHost() + "/my/logins/direct")
+
+                HttpResponse<String> directLoginTokenResponse = Unirest.post(host + "/my/logins/direct")
                         .header("Content-Type", "application/json")
-                        .header("Authorization", " DirectLogin username=\"" + modelParams.getLogin() + "\",password=\"" + modelParams.getPassword() + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
+                        .header("Authorization", " DirectLogin username=\"" + login + "\",password=\"" + password + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
                         .asString();
 
                 if (directLoginTokenResponse.getStatus() != 201) {
@@ -93,7 +97,7 @@ public class PopupDialogAction extends AnAction {
                 String directLoginToken = (String) jsonToken.get("token");
 
 
-                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods")
+                HttpResponse<String> getAllConnectorMethodsResponse = Unirest.get(host + "/obp/v4.0.0/management/connector-methods")
                         .header("Authorization", "DirectLogintoken=" + directLoginToken)
                         .header("Content-Type", "application/json")
                         .asString();
@@ -114,7 +118,7 @@ public class PopupDialogAction extends AnAction {
                     JSONObject json = new JSONObject();
                     json.put("method_name", connectorMethodName).put("method_body", methodBodyEscapedCode);
 
-                    HttpResponse<String> postConnectorMethodResponse = Unirest.post(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods")
+                    HttpResponse<String> postConnectorMethodResponse = Unirest.post(host + "/obp/v4.0.0/management/connector-methods")
                             .header("Authorization", "DirectLogintoken=" + directLoginToken)
                             .header("Content-Type", "application/json")
                             .body(json.toString())
@@ -125,7 +129,7 @@ public class PopupDialogAction extends AnAction {
                     JSONObject json = new JSONObject();
                     json.put("method_body", methodBodyEscapedCode);
 
-                    HttpResponse<String> putConnectorMethodResponse = Unirest.put(modelParams.getHost() + "/obp/v4.0.0/management/connector-methods/" + connectorMethodId)
+                    HttpResponse<String> putConnectorMethodResponse = Unirest.put(host + "/obp/v4.0.0/management/connector-methods/" + connectorMethodId)
                             .header("Authorization", "DirectLogintoken=" + directLoginToken)
                             .header("Content-Type", "application/json")
                             .body(json.toString())
@@ -139,11 +143,7 @@ public class PopupDialogAction extends AnAction {
                         Messages.showMessageDialog(currentProject, "Method " + successfulMethodName + " is loaded successful", dlgTitle, Messages.getInformationIcon());
 
                     } else {
-                        JTextArea showMessageTextArea = new JTextArea();
-
-                        showMessageTextArea.setEditable(false);
-                        String message = (String) responseBodyJson.get("message");
-                        showMessageTextArea.setText(message);
+                        JTextArea showMessageTextArea = createProblemDialog(responseBodyJson);
                         DialogBuilder db = new DialogBuilder();
 
                         db.setCenterPanel(showMessageTextArea);
@@ -160,5 +160,15 @@ public class PopupDialogAction extends AnAction {
 
             }
         }
+    }
+
+    @NotNull
+    private JTextArea createProblemDialog(JSONObject responseBodyJson) {
+        JTextArea showMessageTextArea = new JTextArea();
+
+        showMessageTextArea.setEditable(false);
+        String message = (String) responseBodyJson.get("message");
+        showMessageTextArea.setText(message);
+        return showMessageTextArea;
     }
 }
