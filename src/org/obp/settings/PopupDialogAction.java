@@ -12,6 +12,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -83,10 +84,7 @@ public class PopupDialogAction extends AnAction {
                 String password = modelParams.getPassword();
 
 
-                HttpResponse<String> directLoginTokenResponse = Unirest.post(host + "/my/logins/direct")
-                        .header("Content-Type", "application/json")
-                        .header("Authorization", " DirectLogin username=\"" + login + "\",password=\"" + password + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
-                        .asString();
+                HttpResponse<String> directLoginTokenResponse = getLoginTokenResponse(modelParams, host, login, password);
 
                 if (directLoginTokenResponse.getStatus() != 201) {
                     Messages.showMessageDialog(currentProject, String.valueOf(directLoginTokenResponse.getBody()), dlgTitle, Messages.getInformationIcon());
@@ -160,6 +158,13 @@ public class PopupDialogAction extends AnAction {
 
             }
         }
+    }
+
+    private HttpResponse<String> getLoginTokenResponse(ModelParams modelParams, String host, String login, String password) throws UnirestException {
+        return Unirest.post(host + "/my/logins/direct")
+                .header("Content-Type", "application/json")
+                .header("Authorization", " DirectLogin username=\"" + login + "\",password=\"" + password + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
+                .asString();
     }
 
     @NotNull
