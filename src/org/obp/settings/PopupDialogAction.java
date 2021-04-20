@@ -25,8 +25,24 @@ import org.obp.ui.PushCodeDialog;
 import org.obp.util.ParsingUtil;
 
 import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PopupDialogAction extends AnAction {
+    private Map<MethodSendingType, IProcessMessagesStrategy> MESSAGE_TYPE_TO_METHOD_MAPPING = new HashMap<MethodSendingType, IProcessMessagesStrategy>();
+
+    public PopupDialogAction() {
+
+        MESSAGE_TYPE_TO_METHOD_MAPPING.put(MethodSendingType.METHOD_IS_SENDING_SUCCESSFUL, (MethodSendingResult result) -> {
+            showMethodSuccessfullyAddedDialog(result.getProject(), result.getTitle(), result.getMessage());
+        });
+        MESSAGE_TYPE_TO_METHOD_MAPPING.put(MethodSendingType.METHOD_COMPILATION_ERROR, (MethodSendingResult result) -> {
+            showMethodCompilationErrorDialog(result.getTitle(), result.getMessage());
+        });
+        MESSAGE_TYPE_TO_METHOD_MAPPING.put(MethodSendingType.UNSUCCESSFUL_PROCESS, (MethodSendingResult result) -> {
+            showTheProblemMessage(result.getProject(), result.getTitle(), result.getMessage());
+        });
+    }
 
     @Override
     public void update(AnActionEvent event) {
@@ -53,7 +69,7 @@ public class PopupDialogAction extends AnAction {
         // Using the event, create and show a dialog
         Project currentProject = event.getProject();
 
-        String dlgTitle = event.getPresentation().getDescription();
+        String title = event.getPresentation().getDescription();
         // If an element is selected in the editor, add info about it.
         @Nullable Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
         AppSettingsState instance = AppSettingsState.getInstance();
@@ -73,74 +89,112 @@ public class PopupDialogAction extends AnAction {
         if (pushCodeDialog.showAndGet()) {
 
 
-            try {
-                String methodBodyEscapedCode = URIUtil.encodePath(selectedMethodBody);
-                String connectorMethodName = pushCodeDialog.getFunctionName();
+            ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
+            String host = modelParams.getHost();
+            String login = modelParams.getLogin();
+            String password = modelParams.getPassword();
+            String consumerKey = modelParams.getConsumerKey();
 
-                Unirest.setTimeouts(0, 0);
-                ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
-                String host = modelParams.getHost();
-                String login = modelParams.getLogin();
-                String password = modelParams.getPassword();
+            String connectorMethodName = pushCodeDialog.getFunctionName();
 
 
-                HttpResponse<String> directLoginTokenResponse = getLoginTokenResponse(modelParams, host, login, password);
-
-                if (directLoginTokenResponse.getStatus() != 201) {
-                    Messages.showMessageDialog(currentProject, String.valueOf(directLoginTokenResponse.getBody()), dlgTitle, Messages.getInformationIcon());
-                    return;
-                }
-
-                JSONObject jsonToken = new JSONObject(directLoginTokenResponse.getBody());
-                String directLoginToken = (String) jsonToken.get("token");
-
-
-                HttpResponse<String> connectionMethodResponse = getIfMethodExistsResponse(host, directLoginToken);
-
-                if (connectionMethodResponse.getStatus() != 200) {
-                    Messages.showMessageDialog(currentProject, connectionMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
-                    return;
-                }
-
-                JSONObject connectorMethodsJson = new JSONObject(connectionMethodResponse.getBody());
-                JSONArray connectorMethodsJonArray = connectorMethodsJson.getJSONArray("connector_methods");
-
-
-                String connectorMethodId = ParsingUtil.getConnectorMethodIdFromJSONArray(connectorMethodName, connectorMethodsJonArray);
-
-                //If the connectorMethodId isEmpty, we will create the new connector method 
-                if (connectorMethodId.isEmpty()) {
-                    HttpResponse<String> postConnectorMethodResponse = putNewConnectionMethod(methodBodyEscapedCode, connectorMethodName, host, directLoginToken);
-
-                    Messages.showMessageDialog(currentProject, postConnectorMethodResponse.getBody(), dlgTitle, Messages.getInformationIcon());
-                } else { //if the connectorMethodId is existing, we will update the current connector method.
-                    HttpResponse<String> putConnectorMethodResponse = updateExistingMethodResponse(methodBodyEscapedCode, host, directLoginToken, connectorMethodId);
-
-                    String responseBodyStr = putConnectorMethodResponse.getBody();
-                    JSONObject responseBodyJson = new JSONObject(responseBodyStr);
-                    if (putConnectorMethodResponse.getStatus() == 200) {
-                        String successfulMethodName = (String) responseBodyJson.get("method_name");
-
-                        Messages.showMessageDialog(currentProject, "Method " + successfulMethodName + " is loaded successful", dlgTitle, Messages.getInformationIcon());
-
-                    } else {
-                        JTextArea showMessageTextArea = createProblemDialog(responseBodyJson);
-                        DialogBuilder db = new DialogBuilder();
-
-                        db.setCenterPanel(showMessageTextArea);
-                        db.setTitle("Problem");
-                        db.removeAllActions();
-                        db.addOkAction();
-                        db.show();
-
-                    }
-                }
-
-            } catch (Exception e) {
-                Messages.showMessageDialog(currentProject, e.getMessage(), dlgTitle, Messages.getInformationIcon());
-
-            }
+            MethodSendingResult methodSendingResult = processSendingSelectedCode(currentProject, title, host, login, password, consumerKey, connectorMethodName, selectedMethodBody);
+            MESSAGE_TYPE_TO_METHOD_MAPPING.get(methodSendingResult.getMethodSendingType()).processMessage(methodSendingResult);
         }
+    }
+
+    private MethodSendingResult processSendingSelectedCode(Project project, String title, String host, String login, String password, String consumerKey, String connectorMethodName, String selectedMethodBody) {
+        try {
+            String methodBodyEscapedCode = URIUtil.encodePath(selectedMethodBody);
+            Unirest.setTimeouts(0, 0);
+            HttpResponse<String> directLoginTokenResponse = getLoginTokenResponse(host, login, password, consumerKey);
+
+            if (directLoginTokenResponse.getStatus() != 201) {
+                //showTheProblemMessage(project, title, String.valueOf(directLoginTokenResponse.getBody()));
+                return new MethodSendingResult(MethodSendingType.UNSUCCESSFUL_PROCESS, String.valueOf(directLoginTokenResponse.getBody()), title, project);
+            }
+
+            JSONObject jsonToken = new JSONObject(directLoginTokenResponse.getBody());
+            String directLoginToken = (String) jsonToken.get("token");
+
+
+            HttpResponse<String> connectionMethodResponse = getIfMethodExistsResponse(host, directLoginToken);
+
+            if (connectionMethodResponse.getStatus() != 200) {
+                //showTheProblemMessage(project, title, connectionMethodResponse.getBody());
+                return new MethodSendingResult(MethodSendingType.UNSUCCESSFUL_PROCESS, String.valueOf(directLoginTokenResponse.getBody()), title, project);
+            }
+
+            JSONObject connectorMethodsJson = new JSONObject(connectionMethodResponse.getBody());
+            JSONArray connectorMethodsJonArray = connectorMethodsJson.getJSONArray("connector_methods");
+
+
+            String connectorMethodId = ParsingUtil.getConnectorMethodIdFromJSONArray(connectorMethodName, connectorMethodsJonArray);
+
+            //If the connectorMethodId isEmpty, we will create the new connector method
+            if (connectorMethodId.isEmpty()) {
+                HttpResponse<String> postConnectorMethodResponse = putNewConnectionMethod(methodBodyEscapedCode, connectorMethodName, host, directLoginToken);
+                String responseBodyStr = postConnectorMethodResponse.getBody();
+                JSONObject responseBodyJson = new JSONObject(responseBodyStr);
+
+                if (postConnectorMethodResponse.getStatus() == 200) {
+                    String successfulMethodName = (String) responseBodyJson.get("method_name");
+                    //showMethodSuccessfullyAddedDialog(project, title, successfulMethodName);
+                    return new MethodSendingResult(MethodSendingType.METHOD_IS_SENDING_SUCCESSFUL, successfulMethodName, title, project);
+
+                } else {
+                    String message = (String) responseBodyJson.get("message");
+                    //showMethodCompilationErrorDialog(title, message);
+                    return new MethodSendingResult(MethodSendingType.METHOD_COMPILATION_ERROR, message, title, project);
+
+                }
+                //    showTheProblemMessage(project, title, postConnectorMethodResponse.getBody());
+                //    return new MethodSendingResult(MethodSendingType.UNSUCCESSFUL_PROCESS,String.valueOf(directLoginTokenResponse.getBody()),title);
+            } else { //if the connectorMethodId is existing, we will update the current connector method.
+                HttpResponse<String> putConnectorMethodResponse = updateExistingMethodResponse(methodBodyEscapedCode, host, directLoginToken, connectorMethodId);
+
+                String responseBodyStr = putConnectorMethodResponse.getBody();
+                JSONObject responseBodyJson = new JSONObject(responseBodyStr);
+                if (putConnectorMethodResponse.getStatus() == 200) {
+                    String successfulMethodName = (String) responseBodyJson.get("method_name");
+                    //showMethodSuccessfullyAddedDialog(project, title, successfulMethodName);
+                    return new MethodSendingResult(MethodSendingType.METHOD_IS_SENDING_SUCCESSFUL, successfulMethodName, title, project);
+
+                } else {
+                    String message = (String) responseBodyJson.get("message");
+                    //showMethodCompilationErrorDialog(title, message);
+                    return new MethodSendingResult(MethodSendingType.METHOD_COMPILATION_ERROR, message, title, project);
+
+                }
+            }
+
+        } catch (Exception e) {
+            showTheProblemMessage(project, title, e.getMessage());
+            return new MethodSendingResult(MethodSendingType.UNSUCCESSFUL_PROCESS, e.getMessage(), title, project);
+        }
+
+    }
+
+    private void showMethodSuccessfullyAddedDialog(Project currentProject, String dlgTitle, String methodName) {
+
+
+        Messages.showMessageDialog(currentProject, "Method " + methodName + " is loaded successful", dlgTitle, Messages.getInformationIcon());
+    }
+
+    private void showMethodCompilationErrorDialog(String title, String message) {
+
+        JTextArea showMessageTextArea = createProblemDialog(message);
+        DialogBuilder db = new DialogBuilder();
+
+        db.setCenterPanel(showMessageTextArea);
+        db.setTitle("Problem");
+        db.removeAllActions();
+        db.addOkAction();
+        db.show();
+    }
+
+    private void showTheProblemMessage(Project currentProject, String title, String message) {
+        Messages.showMessageDialog(currentProject, message, title, Messages.getInformationIcon());
     }
 
     private HttpResponse<String> updateExistingMethodResponse(String methodBodyEscapedCode, String host, String directLoginToken, String connectorMethodId) throws UnirestException {
@@ -174,19 +228,19 @@ public class PopupDialogAction extends AnAction {
                 .asString();
     }
 
-    private HttpResponse<String> getLoginTokenResponse(ModelParams modelParams, String host, String login, String password) throws UnirestException {
+    private HttpResponse<String> getLoginTokenResponse(String host, String login, String password, String consumerKey) throws UnirestException {
         return Unirest.post(host + "/my/logins/direct")
                 .header("Content-Type", "application/json")
-                .header("Authorization", " DirectLogin username=\"" + login + "\",password=\"" + password + "\",consumer_key=\"" + modelParams.getConsumerKey() + "\"")
+                .header("Authorization", " DirectLogin username=\"" + login + "\",password=\"" + password + "\",consumer_key=\"" + consumerKey + "\"")
                 .asString();
     }
 
     @NotNull
-    private JTextArea createProblemDialog(JSONObject responseBodyJson) {
+    private JTextArea createProblemDialog(String message) {
         JTextArea showMessageTextArea = new JTextArea();
 
         showMessageTextArea.setEditable(false);
-        String message = (String) responseBodyJson.get("message");
+
         showMessageTextArea.setText(message);
         return showMessageTextArea;
     }
