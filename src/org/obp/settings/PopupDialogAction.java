@@ -29,10 +29,6 @@ public class PopupDialogAction extends AnAction {
 
     @Override
     public void update(AnActionEvent event) {
-        // Set the availability based on whether a project is open
-        Project project = event.getProject();
-        @Nullable Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
-        AppSettingsState instance = AppSettingsState.getInstance();
 
         // Get all the required data from data keys
         final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);

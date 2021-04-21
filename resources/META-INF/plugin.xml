@@ -1,15 +1,15 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
+  <id>com.openbankproject.createconnector</id>
   <name>OBP push</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="contact@openbankproject.com" url="https://www.openbankproject.com/">Open Bank Project</vendor>
 
   <description><![CDATA[
-      OBP push
+      This plugin helps Open Bank Project integrators to call the OBP API to Create Connector Methods and so create Scala functions on the OBP API instance
     ]]></description>
 
   <change-notes><![CDATA[
-     OBP push
+     First implementation of the plug-in
     ]]>
   </change-notes>
 
@@ -36,10 +36,10 @@
 
   <actions>
     <!-- Add your actions here -->
-      <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Create Connector Method"
-              description="OBP Create Connector Method">
-        <add-to-group group-id="ToolsMenu" anchor="first"/>
-      </action>
+    <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Create Connector Method"
+            description="OBP Create Connector Method">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+    </action>
   </actions>
 
 </idea-plugin>
