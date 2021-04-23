@@ -29,17 +29,21 @@ public class PopupDialogAction extends AnAction {
 
     @Override
     public void update(AnActionEvent event) {
-
-        // Get all the required data from data keys
-        final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
-
-
-        // Work off of the primary caret to get the selection info
-        Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
+        try{
+            // Get all the required data from data keys
+            final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
 
 
-        String selectedText = primaryCaret.getSelectedText();
-        event.getPresentation().setEnabledAndVisible(selectedText != null);
+            // Work off of the primary caret to get the selection info
+            Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
+
+
+            String selectedText = primaryCaret.getSelectedText();
+            event.getPresentation().setEnabledAndVisible(selectedText != null);
+
+        }finally{
+            //do nothing
+        }
     }
 
 
