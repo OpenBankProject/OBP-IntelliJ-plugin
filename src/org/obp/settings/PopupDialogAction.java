@@ -21,11 +21,16 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.obp.scalaparsing.FoundMethodsVisitor;
+import org.obp.scalaparsing.ScalaFunction;
+import org.obp.ui.MultiplySelectionDialog;
 import org.obp.ui.PushCodeDialog;
 import org.obp.util.ParsingUtil;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PopupDialogAction extends AnAction {
@@ -80,26 +85,44 @@ public class PopupDialogAction extends AnAction {
 
         // Work off of the primary caret to get the selection info
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-
-
-        String selectedMethodBody = ParsingUtil.removeMethodSignature(primaryCaret.getSelectedText());
-
-        PushCodeDialog pushCodeDialog = new PushCodeDialog(primaryCaret.getSelectedText());
-
-        if (pushCodeDialog.showAndGet()) {
-
-
+        try {
+            List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction(primaryCaret.getSelectedText());
             ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
             String host = modelParams.getHost();
             String login = modelParams.getLogin();
             String password = modelParams.getPassword();
             String consumerKey = modelParams.getConsumerKey();
 
-            String connectorMethodName = pushCodeDialog.getFunctionName();
+
+            if (scalaFunctions.size()<=1){
+                String selectedMethodBody = ParsingUtil.removeMethodSignature(primaryCaret.getSelectedText());
+
+                PushCodeDialog pushCodeDialog = new PushCodeDialog(primaryCaret.getSelectedText());
+
+                if (pushCodeDialog.showAndGet()) {
 
 
-            MethodSendingResult methodSendingResult = processSendingSelectedCode(currentProject, title, host, login, password, consumerKey, connectorMethodName, selectedMethodBody);
-            MESSAGE_TYPE_TO_METHOD_MAPPING.get(methodSendingResult.getMethodSendingType()).processMessage(methodSendingResult);
+
+                    String connectorMethodName = pushCodeDialog.getFunctionName();
+
+
+                    MethodSendingResult methodSendingResult = processSendingSelectedCode(currentProject, title, host, login, password, consumerKey, connectorMethodName, selectedMethodBody);
+                    MESSAGE_TYPE_TO_METHOD_MAPPING.get(methodSendingResult.getMethodSendingType()).processMessage(methodSendingResult);
+                }
+
+            }else{
+                if (new MultiplySelectionDialog(scalaFunctions).showAndGet()){
+                    scalaFunctions.stream().map(scalaFunction->processSendingSelectedCode(currentProject, title, host,
+                            login, password, consumerKey,
+                            scalaFunction.getFunctionName(), scalaFunction.getCodeText())).
+                            forEach(mse->MESSAGE_TYPE_TO_METHOD_MAPPING
+                                    .get(mse.getMethodSendingType()).processMessage(mse));
+
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
