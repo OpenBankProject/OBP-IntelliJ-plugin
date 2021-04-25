@@ -94,28 +94,23 @@ public class PopupDialogAction extends AnAction {
             String consumerKey = modelParams.getConsumerKey();
 
 
-            if (scalaFunctions.size()<=1){
+            if (scalaFunctions.size() <= 1) {
                 String selectedMethodBody = ParsingUtil.removeMethodSignature(primaryCaret.getSelectedText());
 
                 PushCodeDialog pushCodeDialog = new PushCodeDialog(primaryCaret.getSelectedText());
 
                 if (pushCodeDialog.showAndGet()) {
-
-
-
                     String connectorMethodName = pushCodeDialog.getFunctionName();
-
-
                     MethodSendingResult methodSendingResult = processSendingSelectedCode(currentProject, title, host, login, password, consumerKey, connectorMethodName, selectedMethodBody);
                     MESSAGE_TYPE_TO_METHOD_MAPPING.get(methodSendingResult.getMethodSendingType()).processMessage(methodSendingResult);
                 }
 
-            }else{
-                if (new MultiplySelectionDialog(scalaFunctions).showAndGet()){
-                    scalaFunctions.stream().map(scalaFunction->processSendingSelectedCode(currentProject, title, host,
+            } else {
+                if (new MultiplySelectionDialog(scalaFunctions).showAndGet()) {
+                    scalaFunctions.stream().map(scalaFunction -> processSendingSelectedCode(currentProject, title, host,
                             login, password, consumerKey,
                             scalaFunction.getFunctionName(), scalaFunction.getCodeText())).
-                            forEach(mse->MESSAGE_TYPE_TO_METHOD_MAPPING
+                            forEach(mse -> MESSAGE_TYPE_TO_METHOD_MAPPING
                                     .get(mse.getMethodSendingType()).processMessage(mse));
 
                 }
