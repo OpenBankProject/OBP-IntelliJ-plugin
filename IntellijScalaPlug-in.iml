@@ -95,5 +95,6 @@
     <orderEntry type="library" name="commons-text-1.9" level="application" />
     <orderEntry type="library" name="MgntUtils-1.1.0.2" level="application" />
     <orderEntry type="library" name="commons-httpclient-3.1" level="application" />
+    <orderEntry type="library" name="antlr-4.9.2-complete" level="application" />
   </component>
 </module>
