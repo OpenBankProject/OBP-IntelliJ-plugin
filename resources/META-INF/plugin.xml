@@ -38,7 +38,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="org.obp.settings.PopupDialogAction" class="org.obp.settings.PopupDialogAction" text="OBP Create Connector Method"
+    <action id="org.obp.mainaction.PopupDialogAction" class="org.obp.mainaction.PopupDialogAction" text="OBP Create Connector Method"
             description="OBP Create Connector Method">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
     </action>
