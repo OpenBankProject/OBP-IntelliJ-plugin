@@ -1,4 +1,4 @@
-package org.obp.ui;
+package org.obp.mainaction;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.panels.VerticalLayout;

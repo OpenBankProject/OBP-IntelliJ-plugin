@@ -1,4 +1,4 @@
-package org.obp.ui;
+package org.obp.mainaction;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.panels.VerticalLayout;
@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import org.obp.scalaparsing.ScalaFunction;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MultiplySelectionDialog extends DialogWrapper {

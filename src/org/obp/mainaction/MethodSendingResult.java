@@ -1,4 +1,4 @@
-package org.obp.settings;
+package org.obp.mainaction;
 
 import com.intellij.openapi.project.Project;
 

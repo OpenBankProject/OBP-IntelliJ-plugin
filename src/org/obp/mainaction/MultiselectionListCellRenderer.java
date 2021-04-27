@@ -1,6 +1,5 @@
-package org.obp.ui;
+package org.obp.mainaction;
 
-import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.obp.scalaparsing.ScalaFunction;
 

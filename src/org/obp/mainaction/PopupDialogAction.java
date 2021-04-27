@@ -1,4 +1,4 @@
-package org.obp.settings;
+package org.obp.mainaction;
 
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -23,8 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.obp.scalaparsing.FoundMethodsVisitor;
 import org.obp.scalaparsing.ScalaFunction;
-import org.obp.ui.MultiplySelectionDialog;
-import org.obp.ui.PushCodeDialog;
+import org.obp.settings.AppSettingsState;
+import org.obp.settings.ModelParams;
 import org.obp.util.ParsingUtil;
 
 import javax.swing.*;

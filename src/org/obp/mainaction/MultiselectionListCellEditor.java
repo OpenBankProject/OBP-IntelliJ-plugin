@@ -1,4 +1,4 @@
-package org.obp.ui;
+package org.obp.mainaction;
 
 import javax.swing.*;
 

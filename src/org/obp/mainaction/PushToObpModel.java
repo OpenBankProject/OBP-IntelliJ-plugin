@@ -1,4 +1,4 @@
-package org.obp.settings;
+package org.obp.mainaction;
 
 public class PushToObpModel {
     private String functionName;
