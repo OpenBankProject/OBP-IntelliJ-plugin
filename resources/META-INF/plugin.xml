@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.openbankproject.createconnector</id>
   <name>OBP push</name>
-  <version>1.0</version>
+  <version>1.0.2</version>
   <vendor email="contact@openbankproject.com" url="https://www.openbankproject.com/">Open Bank Project</vendor>
 
   <description><![CDATA[
