@@ -31,4 +31,20 @@ public class ModelParams {
     public String getPassword() {
         return password;
     }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setConsumerKey(String consumerKey) {
+        this.consumerKey = consumerKey;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
