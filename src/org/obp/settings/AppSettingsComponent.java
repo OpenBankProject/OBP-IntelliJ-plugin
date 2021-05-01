@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.awt.event.ActionEvent;
@@ -23,12 +24,26 @@ public class AppSettingsComponent {
     private final SettingsTableModel settingsTableModel;
     private final JTable settingsTable;
 
+    public Integer getHostVersion   () {
+        return settingsTable.getSelectedRow();
+    }
+
+    public void setHostVersion(Integer hostVersion) {
+        if (modelParamsList.size()>hostVersion){
+            settingsTable.setRowSelectionInterval(hostVersion,hostVersion);
+
+        }
+    }
+
+
+
     public AppSettingsComponent() {
 
 
         settingsTableModel = new SettingsTableModel(modelParamsList);
 
         settingsTable = new JTable(settingsTableModel);
+
 
         JPanel buttonsPanel = new JPanel();
         FlowLayout layout = new FlowLayout();
@@ -48,7 +63,7 @@ public class AppSettingsComponent {
 
         mainPanel = FormBuilder.createFormBuilder()
                 .addComponent(new JScrollPane(settingsTable))
-                .addLabeledComponent("Hello", buttonsPanel)
+                .addComponent( buttonsPanel)
                 .getPanel();
 
 

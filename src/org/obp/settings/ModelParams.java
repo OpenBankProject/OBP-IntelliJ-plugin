@@ -4,15 +4,18 @@ public class ModelParams {
     String host;
     String consumerKey;
 
-    String login;
-    String password;
+    String log;
+    String pas;
 
-    public ModelParams(String host, String consumerKey, String login, String password) {
+    public ModelParams() {
+    }
+
+    public ModelParams(String host, String consumerKey, String log, String pas) {
         this.host = host;
         this.consumerKey = consumerKey;
 
-        this.login = login;
-        this.password = password;
+        this.log = log;
+        this.pas = pas;
     }
 
     public String getHost() {
@@ -24,12 +27,12 @@ public class ModelParams {
     }
 
 
-    public String getLogin() {
-        return login;
+    public String getLog() {
+        return log;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPas() {
+        return pas;
     }
 
     public void setHost(String host) {
@@ -40,11 +43,15 @@ public class ModelParams {
         this.consumerKey = consumerKey;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setLog(String log) {
+        this.log = log;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPas(String pas) {
+        this.pas = pas;
+    }
+
+    public ModelParams copy() {
+        return new ModelParams(host,consumerKey, log, pas);
     }
 }

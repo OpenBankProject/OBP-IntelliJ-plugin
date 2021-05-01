@@ -43,9 +43,9 @@ public class SettingsTableModel extends AbstractTableModel {
         ModelParams modelParams = this.modelParams.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return modelParams.getLogin();
+                return modelParams.getLog();
             case 1:
-                return modelParams.getPassword();
+                return modelParams.getPas();
             case 2:
                 return modelParams.getHost();
             default:
@@ -60,9 +60,9 @@ public class SettingsTableModel extends AbstractTableModel {
         ModelParams modelParams = this.modelParams.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                modelParams.setLogin((String) aValue);
+                modelParams.setLog((String) aValue);
             case 1:
-                modelParams.setPassword((String) aValue);
+                modelParams.setPas((String) aValue);
             case 2:
                 modelParams.setHost((String) aValue);
             default:

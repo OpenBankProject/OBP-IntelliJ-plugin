@@ -11,7 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Supports storing the application settings in a persistent way.
@@ -23,16 +25,18 @@ import java.util.List;
         storages = {@Storage("SdkSettingsPlugin.xml")}
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
-    private Integer hostVersion = new Integer(0);
-    private List<ModelParams> modelParamsList=new ArrayList<>();
+    public Integer hostVersion = new Integer(0);
+    public List<ModelParams> modelParamsList = new ArrayList<>();
 
 
-    public List<ModelParams> getModelParamsList() { 
-        return modelParamsList;
+    public List<ModelParams> getModelParamsList() {
+        return modelParamsList.stream().map(p -> p.copy()).collect(Collectors.toList());
     }
 
-    public void setModelParamsList(List<ModelParams> modelParamsList) {
-        this.modelParamsList = modelParamsList;
+    public void setModelParamsList(List<ModelParams> newModel) {
+        this.modelParamsList = (newModel != null) ?
+                newModel.stream().map(p -> p.copy()).collect(Collectors.toList()) :
+                new ArrayList<>();
     }
 
     public Integer getHostVersion() {
@@ -42,9 +46,6 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     public void setHostVersion(Integer hostVersion) {
         this.hostVersion = hostVersion;
     }
-
-
-
 
 
     public static AppSettingsState getInstance() {
@@ -64,7 +65,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
 
     public ModelParams getModelParams() {
-       return modelParamsList.get(hostVersion.intValue());
+        return modelParamsList.get(hostVersion.intValue());
 
     }
 

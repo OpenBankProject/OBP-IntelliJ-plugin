@@ -89,8 +89,8 @@ public class PopupDialogAction extends AnAction {
             List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction(primaryCaret.getSelectedText());
             ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
             String host = modelParams.getHost();
-            String login = modelParams.getLogin();
-            String password = modelParams.getPassword();
+            String login = modelParams.getLog();
+            String password = modelParams.getPas();
             String consumerKey = modelParams.getConsumerKey();
 
 

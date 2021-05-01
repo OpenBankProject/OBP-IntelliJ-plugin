@@ -38,8 +38,6 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
         boolean modified = !(
                 mySettingsComponent.getModelParamsList().equals(settings.getModelParamsList())
-
-
         );
 
 
@@ -51,15 +49,15 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
 
         settings.setModelParamsList(mySettingsComponent.getModelParamsList());
+        settings.setHostVersion(mySettingsComponent.getHostVersion());
+
     }
 
     @Override
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setModelParamsList(settings.getModelParamsList());
-
-        //mySettingsComponent.setHostVersion(settings.getHostVersion());
-
+        mySettingsComponent.setHostVersion(settings.getHostVersion());
 
     }
 
