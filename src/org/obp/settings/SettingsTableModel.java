@@ -10,6 +10,10 @@ public class SettingsTableModel extends AbstractTableModel {
         this.modelParams = modelParams;
     }
 
+    public List<ModelParams> getModelParams() {
+        return modelParams;
+    }
+
     public void setModelParams(List<ModelParams> modelParams) {
         this.modelParams = modelParams;
     }
