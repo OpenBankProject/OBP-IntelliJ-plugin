@@ -38,7 +38,6 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
                 newModel.stream().map(p -> p.copy()).collect(Collectors.toList()) :
                 new ArrayList<>();
     }
-
     public Integer getHostVersion() {
         return hostVersion;
     }
