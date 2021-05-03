@@ -64,7 +64,9 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
 
     public ModelParams getModelParams() {
-        return modelParamsList.get(hostVersion.intValue());
+
+        return modelParamsList.size() > 0 && modelParamsList.size() > hostVersion.intValue() ?
+                modelParamsList.get(hostVersion.intValue()) : new ModelParams();
 
     }
 

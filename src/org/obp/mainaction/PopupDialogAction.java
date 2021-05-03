@@ -63,7 +63,7 @@ public class PopupDialogAction extends AnAction {
             String selectedText = primaryCaret.getSelectedText();
             event.getPresentation().setEnabledAndVisible(selectedText != null);
 
-        }finally{
+        }catch(Exception e){
             //do nothing
         }
     }
