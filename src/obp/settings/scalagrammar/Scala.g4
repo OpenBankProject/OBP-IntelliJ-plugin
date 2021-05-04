@@ -111,8 +111,13 @@ expr1
 
    | simpleExpr1 argumentExprs '=' expr
    | postfixExpr ascription?
-   | postfixExpr 'match' '{' caseClauses '}'
+   | matchClause
+   | simpleExpr1//add dot values
+
    ;
+
+
+matchClause:(postfixExpr|generator) 'match' '{' caseClauses '}';
 
 prefixDef
    : '-' | '+' | '~' | '!'
@@ -140,7 +145,7 @@ simpleExpr
 // can't use (simpleExpr|simpleExpr1) '.' Id
 simpleExpr1
    : literal
-   | stableId
+   | stableId argumentExprs*
    | '_'
    | '(' exprs? ')'
    | simpleExpr '.' Id
@@ -171,7 +176,7 @@ blockExpr
    ;
 
 block
-   : blockStat+ resultExpr?
+   : blockStat resultExpr?
    ;
 
 blockStat
