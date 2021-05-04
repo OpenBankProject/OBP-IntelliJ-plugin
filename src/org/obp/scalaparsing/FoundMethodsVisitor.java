@@ -68,10 +68,15 @@ public class FoundMethodsVisitor extends ScalaBaseVisitor<ScalaCode> {
     }
 
     private String retrieveCtxText(ParserRuleContext ctx){
-        int a = ctx.start.getStartIndex();
-        int b = ctx.stop.getStopIndex();
+        int start = ctx.start.getStartIndex();
+        int stop = ctx.stop.getStopIndex();
+        if (start>stop){
+            int temp=stop;
+            stop=start;
+            start=temp;
+        }
+        Interval interval = new Interval(start,stop);
 
-        Interval interval = new Interval(a,b);
         return antlrInputStream.getText(interval);
     }
 }
