@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ANTLRGenerationPreferences">
-    <option name="perGrammarGenerationSettings">
-      <list>
-        <PerGrammarGenerationSettings>
-          <option name="fileName" value="$PROJECT_DIR$/src/obp/settings/scalagrammar/Scala.g4" />
-          <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src" />
-          <option name="libDir" value="" />
-          <option name="encoding" value="" />
-          <option name="pkg" value="obp.settings.antlrgenerated" />
-          <option name="language" value="Java" />
-          <option name="generateVisitor" value="true" />
-        </PerGrammarGenerationSettings>
-      </list>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="true" project-jdk-name="IntelliJ IDEA Community Edition IC-203.7148.57" project-jdk-type="IDEA JDK">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="true" project-jdk-name="14" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

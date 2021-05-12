@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2f4a31a0-0281-4e93-8aaf-24516daee943" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/antlr/Scala.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/api_linter_proj.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IntellijScalaPlug-in.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/MgntUtils-1.1.0.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/antlr-4.9.2-complete.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/commons-codec-1.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/commons-httpclient-3.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/commons-logging-1.1.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/commons-text-1.9.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/httpasyncclient-4.0.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/httpclient-4.3.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/httpcore-4.3.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/httpcore-nio-4.3.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/httpmime-4.3.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/json-20140107.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/unirest-java-1.4.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/Scala.interp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/Scala.tokens" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaBaseListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaBaseVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaLexer.interp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaLexer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaLexer.tokens" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/antlrgenerated/ScalaVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obp/settings/scalagrammar/Scala.g4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/IProcessMessagesStrategy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/MethodSendingResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/MethodSendingType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/MultiplySelectionDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/MultiselectionListCellEditor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/MultiselectionListCellRenderer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/PopupDialogAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/PushCodeDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/mainaction/PushToObpModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/scalaparsing/CodeType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/scalaparsing/FoundMethodsVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/scalaparsing/PlainCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/scalaparsing/ScalaCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/scalaparsing/ScalaFunction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/settings/AppSettingsComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/settings/AppSettingsConfigurable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/settings/AppSettingsState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/settings/ModelParams.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/settings/SettingsTableModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/obp/util/ParsingUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/org/obp/scalaparsing/TestParsingScalaCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/org/obp/util/TestParsingTheMethodName.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1sOmDL9kcDPg9C3NZvaQdbKyeMk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/antlr" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src\antlr" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src\main\resources\META-INF" />
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src" />
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src\main\antlr" />
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src\main\java\obp\settings" />
+      <recent name="C:\Users\Anna\Documents\GitHub\OBP-IntelliJ-plugin\src\test\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.Plugin">
+    <configuration name="Plugin" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":runIde" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="gradlew" type="ShConfigurationType" temporary="true">
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/gradlew" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Shell Script.gradlew" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f4a31a0-0281-4e93-8aaf-24516daee943" name="Default Changelist" comment="" />
+      <created>1620751895088</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620751895088</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
