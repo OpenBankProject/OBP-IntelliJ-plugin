@@ -15,12 +15,16 @@ public class TestParsingScalaCode {
 
     @Test
     public void testHelloWorldFunction() throws IOException {
-        assertEquals(1,FoundMethodsVisitor.parseScalaFunction("def hello = println(\"Hello, world!\")").size());
+        List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction("def hello = println(\"Hello, world!\")");
+        assertEquals(1, scalaFunctions.size());
+        ScalaFunction scalaFunction = scalaFunctions.get(0);
+        assertEquals("hello",scalaFunction.getFunctionName());
     }
 
     @Test
     public void testHelloWorldFunctionWithBracket() throws IOException {
-        List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction("{def hello = println(\"Hello, world!\")}");
+        List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction("{" +
+                "def hello = println(\"Hello, world!\")}");
         assertEquals(1, scalaFunctions.size());
         ScalaFunction scalaFunction = scalaFunctions.get(0);
         assertEquals("hello",scalaFunction.getFunctionName());
@@ -47,7 +51,19 @@ public class TestParsingScalaCode {
         assertEquals(1, scalaFunctions.size());
         ScalaFunction scalaFunction = scalaFunctions.get(0);
         assertEquals("getBank",scalaFunction.getFunctionName());
-        assertEquals("Future.successful(Full((BankCommons(BankId(\"Hello bank id\"),\"1\",\"1\",\"1\",\"1\",\"1\",\"1\",\"1\",\"8\"),None)))",scalaFunction.getCodeText());
+        assertEquals("Future.successful(\n" +
+                "    Full((BankCommons(\n" +
+                "      BankId(\"Hello bank id\"),\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"1\",\n" +
+                "      \"8\"\n" +
+                "    ), None))\n" +
+                "  )",scalaFunction.getCodeText());
 
 
     }

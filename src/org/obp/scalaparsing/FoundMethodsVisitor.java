@@ -14,7 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class FoundMethodsVisitor extends ScalaBaseVisitor<ScalaCode> {
     public List<ScalaFunction> getFunctions() {
@@ -42,18 +46,34 @@ public class FoundMethodsVisitor extends ScalaBaseVisitor<ScalaCode> {
     }
 
     public static List<ScalaFunction> parseScalaFunction(String programText) throws IOException {
-        programText=programText.replaceAll("override","");
-        ANTLRInputStream antlrInputStream = new ANTLRInputStream(new ByteArrayInputStream(programText.getBytes()));
-        ScalaLexer lexer = new ScalaLexer(antlrInputStream);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        ScalaParser parser = new ScalaParser(tokens);
-        parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
-        //parser.setErrorHandler(new BailErrorStrategy());
-        ParseTree tree = parser.block();
-        FoundMethodsVisitor eval = new FoundMethodsVisitor(antlrInputStream);
-        eval.visit(tree);
+        Pattern overrideDefPattern=Pattern.compile("((\\s*)(override)(\\s+)def(\\s+))|((\\s*)def(\\s+))");
+        Matcher matcher1 = overrideDefPattern.matcher(programText);
+        System.out.println(matcher1.lookingAt());
+        String[] split = overrideDefPattern.split(programText);
+        List<String> strings = Arrays.asList(split);
+        Pattern pattern = Pattern.compile("[a-zA-Z_{1}][a-zA-Z0-9_]+");
 
-        return eval.getFunctions();
+        return strings.stream().filter(str->!str.trim().equals("")).map(functionStr->{
+            Matcher matcher = pattern.matcher(functionStr);
+            if (matcher.find()){
+                int start = matcher.start();
+                int end = matcher.end();
+                String functionName = functionStr.substring(start, end);
+                String functionBody=functionStr.substring(end+1);
+                int indexOfEquals = functionBody.indexOf("=");
+                 functionBody = functionBody.substring(indexOfEquals + 1).trim();
+                 if (functionBody.startsWith("{")&&functionBody.endsWith("}")){
+                     functionBody=functionBody.substring(1,functionBody.length()-1);
+                 }
+                return new ScalaFunction(functionBody,functionName);
+            }else{
+                return new ScalaFunction("",functionStr);
+
+            }
+
+
+        }).collect(Collectors.toList());
+
     }
 
     @NotNull
