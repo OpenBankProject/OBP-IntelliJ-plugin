@@ -48,7 +48,7 @@ public class FoundMethodsVisitor extends ScalaBaseVisitor<ScalaCode> {
     public static List<ScalaFunction> parseScalaFunction(String programText) throws IOException {
         Pattern overrideDefPattern=Pattern.compile("((\\s*)(override)(\\s+)def(\\s+))|((\\s*)def(\\s+))");
         Matcher matcher1 = overrideDefPattern.matcher(programText);
-        System.out.println(matcher1.lookingAt());
+       
         String[] split = overrideDefPattern.split(programText);
         List<String> strings = Arrays.asList(split);
         Pattern pattern = Pattern.compile("[a-zA-Z_{1}][a-zA-Z0-9_]+");
