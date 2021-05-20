@@ -22,9 +22,7 @@
        on how to target different products -->
   <depends>com.intellij.modules.platform</depends>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
+
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationService serviceImplementation="obp.settings.settings.AppSettingsState"/>
