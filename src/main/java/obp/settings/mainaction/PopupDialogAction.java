@@ -55,7 +55,7 @@ public class PopupDialogAction extends AnAction {
     public void update(AnActionEvent event) {
         try{
             // Get all the required data from data keys
-            final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
+            /*final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
 
 
             // Work off of the primary caret to get the selection info
@@ -64,7 +64,7 @@ public class PopupDialogAction extends AnAction {
 
             String selectedText = primaryCaret.getSelectedText();
             event.getPresentation().setEnabledAndVisible(selectedText != null);
-
+*/
         }catch(Exception e){
             //do nothing
         }
