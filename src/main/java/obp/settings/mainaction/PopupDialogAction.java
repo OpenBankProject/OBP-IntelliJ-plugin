@@ -53,21 +53,7 @@ public class PopupDialogAction extends AnAction {
 
     @Override
     public void update(AnActionEvent event) {
-        try{
-            // Get all the required data from data keys
-            /*final Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
-
-
-            // Work off of the primary caret to get the selection info
-            Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-
-
-            String selectedText = primaryCaret.getSelectedText();
-            event.getPresentation().setEnabledAndVisible(selectedText != null);
-*/
-        }catch(Exception e){
-            //do nothing
-        }
+        
     }
 
 
