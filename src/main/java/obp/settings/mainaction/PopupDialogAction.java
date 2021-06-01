@@ -1,6 +1,7 @@
 package obp.settings.mainaction;
 
 
+import com.intellij.credentialStore.Credentials;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -16,7 +17,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import obp.settings.scalaparsing.FoundMethodsVisitor;
 import obp.settings.scalaparsing.ScalaFunction;
 import obp.settings.settings.AppSettingsState;
-import obp.settings.settings.ModelParams;
 import obp.settings.util.ParsingUtil;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +75,7 @@ public class PopupDialogAction extends AnAction {
         Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
         try {
             List<ScalaFunction> scalaFunctions = FoundMethodsVisitor.parseScalaFunction(primaryCaret.getSelectedText());
-            ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
+            AppSettingsState.ModelParams modelParams = AppSettingsState.getInstance().getModelParams();
             String host = modelParams.getHost();
             String login = modelParams.getLog();
             String password = modelParams.getPas();

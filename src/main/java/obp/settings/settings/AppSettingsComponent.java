@@ -3,16 +3,16 @@
 package obp.settings.settings;
 
 import com.intellij.util.ui.FormBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 public class AppSettingsComponent {
 
     private final JPanel mainPanel;
-    List<ModelParams> modelParamsList = new ArrayList<ModelParams>();
+    List<AppSettingsState.ModelParams> modelParamsList = new ArrayList<AppSettingsState.ModelParams>();
     private final SettingsTableModel settingsTableModel;
     private final JTable settingsTable;
 
@@ -74,12 +74,25 @@ public class AppSettingsComponent {
 
     }
 
+    private int parseParamNumber(String id){
+        return Integer.parseInt(id.split("_")[1]);
+    }
     private void addEmptyParams() {
-        modelParamsList.add(new ModelParams("", "", "", ""));
+
+        modelParamsList.add(AppSettingsState.createModelParams("", "", "", ""));
         settingsTableModel.fireTableDataChanged();
         if (settingsTable.getSelectedRow()<0){
             settingsTable.setRowSelectionInterval(0,0);
         }
+    }
+
+    private int getEmptyParamID() {
+        int paramNumber=0;
+        Optional<AppSettingsState.ModelParams> max = modelParamsList.stream().max(Comparator.comparingInt(mp -> parseParamNumber(mp.getId().split("_")[1])));
+        if (!max.isEmpty()){
+            paramNumber=Integer.parseInt(max.get().getId().split("_")[1]);
+        }
+        return paramNumber;
     }
 
     private void removeSelected() {
@@ -90,7 +103,8 @@ public class AppSettingsComponent {
 
 
         } else if (modelParamsList.size() > 0) {
-            modelParamsList.remove(modelParamsList.size() - 1);
+            AppSettingsState.ModelParams remove = modelParamsList.remove(modelParamsList.size() - 1);
+            AppSettingsState.removeModelParams(remove);
         }
 
 
@@ -105,12 +119,12 @@ public class AppSettingsComponent {
         return mainPanel;
     }
 
-    public void setModelParamsList(List<ModelParams> modelParamsList) {
+    public void setModelParamsList(List<AppSettingsState.ModelParams> modelParamsList) {
         this.modelParamsList = modelParamsList;
         settingsTableModel.setModelParams(modelParamsList);
     }
 
-    public List<ModelParams> getModelParamsList() {
+    public List<AppSettingsState.ModelParams> getModelParamsList() {
         return settingsTableModel.getModelParams();
     }
 }

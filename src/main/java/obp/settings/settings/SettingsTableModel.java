@@ -4,17 +4,17 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class SettingsTableModel extends AbstractTableModel {
-    List<ModelParams> modelParams;
+    List<AppSettingsState.ModelParams> modelParams;
 
-    public SettingsTableModel(List<ModelParams> modelParams) {
+    public SettingsTableModel(List<AppSettingsState.ModelParams> modelParams) {
         this.modelParams = modelParams;
     }
 
-    public List<ModelParams> getModelParams() {
+    public List<AppSettingsState.ModelParams> getModelParams() {
         return modelParams;
     }
 
-    public void setModelParams(List<ModelParams> modelParams) {
+    public void setModelParams(List<AppSettingsState.ModelParams> modelParams) {
         this.modelParams = modelParams;
     }
 
@@ -44,7 +44,7 @@ public class SettingsTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        ModelParams modelParams = this.modelParams.get(rowIndex);
+        AppSettingsState.ModelParams modelParams = this.modelParams.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return modelParams.getLog();
@@ -60,8 +60,8 @@ public class SettingsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        ModelParams mp = this.modelParams.get(rowIndex);
-        ModelParams modelParams = this.modelParams.get(rowIndex);
+        AppSettingsState.ModelParams mp = this.modelParams.get(rowIndex);
+        AppSettingsState.ModelParams modelParams = this.modelParams.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 modelParams.setLog((String) aValue);
